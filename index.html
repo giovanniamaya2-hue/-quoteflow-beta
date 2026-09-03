@@ -1,76 +1,78 @@
-<!doctype html>
+<!DOCTYPE html>
 
-<html lang="es">
+<html lang="en">
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>QuoteFlow Beta</title>
 
 <style>
 
+:root{
+
+  --orange:#ff6a00;--orange2:#ff8a00;--black:#0b0b0d;--dark:#151518;
+
+  --card:#1d1d21;--white:#fff;--muted:#a9a9b2;--line:#303036;
+
+}
+
 *{box-sizing:border-box}
 
-body{margin:0;background:#08111f;color:#f4f7fb;font-family:Arial,sans-serif}
+body{margin:0;background:var(--black);color:var(--white);font-family:Arial,Helvetica,sans-serif}
 
-.app{max-width:900px;margin:auto;padding:20px}
+.container{max-width:1100px;margin:auto;padding:20px}
 
-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+header{display:flex;justify-content:space-between;align-items:center;gap:15px;margin-bottom:20px}
 
-.logo{background:#19c6b4;color:#061b19;width:45px;height:45px;border-radius:14px;display:grid;place-items:center;font-size:25px;font-weight:bold}
+.brand{font-size:27px;font-weight:900}.brand span{color:var(--orange)}
 
-.brand{display:flex;gap:12px;align-items:center}
+.lang button,.service button,button{border:0;border-radius:10px;padding:11px 15px;font-weight:800;cursor:pointer}
 
-h1,h2,h3{margin:0}
+.lang button{background:#252529;color:#fff}.lang .active{background:var(--orange)}
 
-small,p{color:#9eacbf}
+.service{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}
 
-select,input,textarea,button{font:inherit}
+.service button{background:#222226;color:#ddd}.service button.active{background:var(--orange);color:#fff}
 
-select,input,textarea{width:100%;background:#0a1525;color:white;border:1px solid #26364b;border-radius:10px;padding:12px}
+.grid{display:grid;grid-template-columns:1.35fr .85fr;gap:18px}
 
-textarea{min-height:80px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px}
 
-.card{background:#101c2e;border:1px solid #26364b;border-radius:18px;padding:18px;margin-bottom:16px}
+h2{margin:0 0 16px;font-size:19px}
 
-.hero{padding:22px}
+h3{font-size:15px;margin:20px 0 10px;color:#fff}
 
-.hero h2{font-size:28px;margin-bottom:8px}
+.fields{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 
-.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field label{display:block;color:var(--muted);font-size:12px;font-weight:700;margin-bottom:6px}
 
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input{width:100%;background:#101014;border:1px solid var(--line);color:#fff;border-radius:9px;padding:12px;font-size:14px;outline:none}
+
+input:focus{border-color:var(--orange)}
 
 .full{grid-column:1/-1}
 
-label{display:block;color:#9eacbf;font-size:13px;margin-bottom:6px}
+.summary{position:sticky;top:15px}
 
-.services{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+.total{font-size:34px;font-weight:900;color:var(--orange);margin:8px 0 18px}
 
-.chip{width:auto;border:1px solid #26364b;background:#0a1525;color:#dbe5f2;border-radius:20px;padding:9px 14px}
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid var(--line);color:#ddd}
 
-.chip.active{background:#19c6b4;color:#06201d;border-color:#19c6b4}
+.row strong{color:#fff}
 
-.actions{display:flex;gap:10px;margin-top:16px}
+.actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:18px}
 
-.primary{flex:1;background:#19c6b4;border:0;border-radius:10px;padding:13px;font-weight:bold}
+.primary{background:var(--orange);color:#fff}.secondary{background:#29292e;color:#fff}
 
-.secondary{background:transparent;color:white;border:1px solid #26364b;border-radius:10px;padding:13px}
+.note{font-size:11px;color:var(--muted);margin-top:12px;line-height:1.5}
 
-.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #26364b}
+.saved{margin-top:18px}.quote-item{background:#121216;border:1px solid var(--line);padding:10px;border-radius:9px;margin-top:8px;font-size:12px}
 
-.total{font-size:22px;border-bottom:0;padding-top:15px}
-
-.quote{display:flex;justify-content:space-between;border-bottom:1px solid #26364b;padding:12px 0}
-
-.note{font-size:12px;line-height:1.5}
-
-.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#19c6b4;color:#06201d;padding:12px 18px;border-radius:10px;font-weight:bold;display:none}
-
-@media(max-width:700px){.grid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.full{grid-column:auto}}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.summary{position:static}.fields{grid-template-columns:1fr}}
 
 </style>
 
@@ -78,493 +80,892 @@ label{display:block;color:#9eacbf;font-size:13px;margin-bottom:6px}
 
 <body>
 
-<div class="app">
+<div class="container">
 
 <header>
 
-<div class="brand">
+  <div class="brand">Quote<span>Flow</span> <small style="font-size:11px;color:#aaa">BETA</small></div>
 
-<div class="logo">Q</div>
+  <div class="lang">
 
-<div>
+    <button id="enBtn" class="active" onclick="setLang('en')">EN</button>
 
-<h1>QuoteFlow <span style="color:#19c6b4">Beta</span></h1>
+    <button id="esBtn" onclick="setLang('es')">ES</button>
 
-<small id="tagline">Cotizaciones profesionales, de forma sencilla.</small>
-
-</div>
-
-</div>
-
-<select id="lang" style="width:auto">
-
-<option value="es">ES</option>
-
-<option value="en">EN</option>
-
-</select>
+  </div>
 
 </header>
 
-<div class="card hero">
+<div class="service">
 
-<h2 id="title">Crea una cotización profesional en minutos.</h2>
+  <button id="roofBtn" class="active" onclick="setType('roof')">🏠 Roofing</button>
 
-<p id="subtitle">Diseñada para Roofing, concreto y servicios para el hogar.</p>
+  <button id="concreteBtn" onclick="setType('concrete')">🧱 Concrete</button>
+
+  <button id="generalBtn" onclick="setType('general')">📋 General</button>
 
 </div>
 
 <div class="grid">
 
-<div class="card">
+<section class="card">
 
-<h3 id="details">Detalles de la cotización</h3>
-
-<div class="services">
-
-<button class="chip active" data-service="Roofing">Roofing</button>
-
-<button class="chip" data-service="Concrete">Concreto</button>
-
-<button class="chip" data-service="General">General</button>
-
-</div>
+<h2 data-i="project">Project Information</h2>
 
 <div class="fields">
 
-<div>
+<div class="field">
 
-<label id="clientL">Nombre del cliente</label>
+<label data-i="client">Client</label>
 
-<input id="client" placeholder="Juan Pérez">
-
-</div>
-
-<div>
-
-<label id="companyL">Tu compañía</label>
-
-<input id="company" placeholder="ABC Construction">
+<input id="client">
 
 </div>
 
-<div class="full">
+<div class="field">
 
-<label id="jobL">Descripción del trabajo</label>
+<label data-i="company">Company</label>
 
-<textarea id="job" placeholder="Roof replacement, driveway, repair..."></textarea>
-
-</div>
-
-<div>
-
-<label id="materialL">Materiales</label>
-
-<input id="materials" type="number" min="0" value="0">
+<input id="company">
 
 </div>
 
-<div>
+<div class="field full">
 
-<label id="laborL">Mano de obra</label>
+<label data-i="job">Job / Address</label>
 
-<input id="labor" type="number" min="0" value="0">
-
-</div>
-
-<div>
-
-<label id="otherL">Otros costos</label>
-
-<input id="other" type="number" min="0" value="0">
-
-</div>
-
-<div>
-
-<label id="marginL">Margen %</label>
-
-<input id="margin" type="number" min="0" value="20">
+<input id="job">
 
 </div>
 
 </div>
+
+<div id="roofFields">
+
+<h3 data-i="roofMeasurements">Roof Measurements</h3>
+
+<div class="fields">
+
+<div class="field">
+
+<label data-i="roofArea">Roof area (sq ft)</label>
+
+<input id="roofArea" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="waste">Waste (%)</label>
+
+<input id="roofWaste" type="number" value="10" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="materialSquare">Shingles / material ($ per square)</label>
+
+<input id="materialSquare" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="under">Underlayment ($)</label>
+
+<input id="under" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="flash">Flashing ($)</label>
+
+<input id="flash" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="vents">Vents / accessories ($)</label>
+
+<input id="vents" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="tear">Tear-off ($ per square)</label>
+
+<input id="tear" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="install">Installation labor ($ per square)</label>
+
+<input id="install" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="dump">Dump / disposal ($)</label>
+
+<input id="dump" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="other">Other ($)</label>
+
+<input id="otherRoof" type="number" value="0" oninput="calc()">
+
+</div>
+
+</div>
+
+</div>
+
+<div id="concreteFields" style="display:none">
+
+<h3 data-i="concreteMeasurements">Concrete Measurements</h3>
+
+<div class="fields">
+
+<div class="field">
+
+<label data-i="length">Length (ft)</label>
+
+<input id="length" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="width">Width (ft)</label>
+
+<input id="width" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="thickness">Thickness (in)</label>
+
+<input id="thickness" type="number" value="4" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="waste">Waste (%)</label>
+
+<input id="concreteWaste" type="number" value="10" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="concreteYard">Concrete ($ per cubic yard)</label>
+
+<input id="concreteYard" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="rebar">Rebar / mesh ($)</label>
+
+<input id="rebar" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="forms">Forms ($)</label>
+
+<input id="forms" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="excavation">Excavation / base ($)</label>
+
+<input id="excavation" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="delivery">Delivery / pump ($)</label>
+
+<input id="delivery" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="labor">Labor ($)</label>
+
+<input id="laborConcrete" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="other">Other ($)</label>
+
+<input id="otherConcrete" type="number" value="0" oninput="calc()">
+
+</div>
+
+</div>
+
+</div>
+
+<div id="generalFields" style="display:none">
+
+<h3 data-i="generalCosts">General Costs</h3>
+
+<div class="fields">
+
+<div class="field">
+
+<label data-i="materials">Materials ($)</label>
+
+<input id="materials" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="labor">Labor ($)</label>
+
+<input id="laborGeneral" type="number" value="0" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="other">Other ($)</label>
+
+<input id="otherGeneral" type="number" value="0" oninput="calc()">
+
+</div>
+
+</div>
+
+</div>
+
+<h3 data-i="pricing">Pricing</h3>
+
+<div class="fields">
+
+<div class="field">
+
+<label data-i="overhead">Overhead (%)</label>
+
+<input id="overhead" type="number" value="10" oninput="calc()">
+
+</div>
+
+<div class="field">
+
+<label data-i="profit">Profit / markup (%)</label>
+
+<input id="profit" type="number" value="20" oninput="calc()">
+
+</div>
+
+</div>
+
+</section>
+
+<aside class="card summary">
+
+<h2 data-i="quoteSummary">Quote Summary</h2>
+
+<div class="row">
+
+<span id="metric1Label">Squares</span>
+
+<strong id="metric1Value">0</strong>
+
+</div>
+
+<div class="row">
+
+<span id="metric2Label">Adjusted squares</span>
+
+<strong id="metric2Value">0</strong>
+
+</div>
+
+<div class="row">
+
+<span data-i="baseCost">Base cost</span>
+
+<strong id="base">$0.00</strong>
+
+</div>
+
+<div class="row">
+
+<span data-i="overheadCost">Overhead</span>
+
+<strong id="oh">$0.00</strong>
+
+</div>
+
+<div class="row">
+
+<span data-i="profitCost">Profit</span>
+
+<strong id="pr">$0.00</strong>
+
+</div>
+
+<div style="margin-top:20px;color:#aaa;font-size:12px" data-i="recommended">
+
+Recommended quote
+
+</div>
+
+<div class="total" id="total">$0.00</div>
 
 <div class="actions">
 
-<button class="primary" id="save">Guardar cotización</button>
+<button class="primary" onclick="saveQuote()" data-i="save">
 
-<button class="secondary" id="clear">Limpiar</button>
+Save Quote
 
-</div>
+</button>
 
-<p class="note" id="note">
+<button class="secondary" onclick="window.print()" data-i="print">
 
-Beta: las cotizaciones se guardan solamente en este navegador para pruebas.
+Print
 
-</p>
+</button>
 
-</div>
+<button class="secondary" onclick="clearAll()" data-i="clear">
 
-<div>
+Clear
 
-<div class="card">
-
-<h3 id="preview">Vista previa</h3>
-
-<div class="row">
-
-<span id="clientS">Cliente</span>
-
-<strong id="sClient">—</strong>
+</button>
 
 </div>
 
-<div class="row">
+<div class="note" data-i="note">
 
-<span id="typeS">Servicio</span>
-
-<strong id="sType">Roofing</strong>
+Prototype calculation. Review material quantities, local labor rates, taxes, permits and project conditions before sending a final quote.
 
 </div>
 
-<div class="row">
+<div class="saved">
 
-<span id="baseS">Costo base</span>
+<strong data-i="recent">Recent Quotes</strong>
 
-<strong id="sBase">$0.00</strong>
-
-</div>
-
-<div class="row">
-
-<span id="markupS">Margen</span>
-
-<strong id="sMarkup">$0.00</strong>
+<div id="savedList"></div>
 
 </div>
 
-<div class="row total">
-
-<span id="totalS">Total</span>
-
-<strong id="sTotal">$0.00</strong>
+</aside>
 
 </div>
 
 </div>
-
-<div class="card">
-
-<h3 id="recent">Cotizaciones recientes</h3>
-
-<div id="history">
-
-<p id="empty">No hay cotizaciones guardadas.</p>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<div class="toast" id="toast">¡Cotización guardada!</div>
 
 <script>
 
-let service="Roofing";
+let type='roof';
 
-const translations={
+let lang='en';
 
-es:{
-
-tagline:"Cotizaciones profesionales, de forma sencilla.",
-
-title:"Crea una cotización profesional en minutos.",
-
-subtitle:"Diseñada para Roofing, concreto y servicios para el hogar.",
-
-details:"Detalles de la cotización",
-
-clientL:"Nombre del cliente",
-
-companyL:"Tu compañía",
-
-jobL:"Descripción del trabajo",
-
-materialL:"Materiales",
-
-laborL:"Mano de obra",
-
-otherL:"Otros costos",
-
-marginL:"Margen %",
-
-save:"Guardar cotización",
-
-clear:"Limpiar",
-
-note:"Beta: las cotizaciones se guardan solamente en este navegador para pruebas.",
-
-preview:"Vista previa",
-
-clientS:"Cliente",
-
-typeS:"Servicio",
-
-baseS:"Costo base",
-
-markupS:"Margen",
-
-totalS:"Total",
-
-recent:"Cotizaciones recientes",
-
-empty:"No hay cotizaciones guardadas.",
-
-saved:"¡Cotización guardada!"
-
-},
+const T={
 
 en:{
 
-tagline:"Professional estimates, made simple.",
+project:'Project Information',
 
-title:"Create a professional quote in minutes.",
+client:'Client',
 
-subtitle:"Built for roofing, concrete, and home-service contractors.",
+company:'Company',
 
-details:"Quote details",
+job:'Job / Address',
 
-clientL:"Client name",
+roofMeasurements:'Roof Measurements',
 
-companyL:"Your company",
+roofArea:'Roof area (sq ft)',
 
-jobL:"Job description",
+waste:'Waste (%)',
 
-materialL:"Materials",
+materialSquare:'Shingles / material ($ per square)',
 
-laborL:"Labor",
+under:'Underlayment ($)',
 
-otherL:"Other costs",
+flash:'Flashing ($)',
 
-marginL:"Markup %",
+vents:'Vents / accessories ($)',
 
-save:"Save quote",
+tear:'Tear-off ($ per square)',
 
-clear:"Clear",
+install:'Installation labor ($ per square)',
 
-note:"Beta: quotes are stored only in this browser for testing.",
+dump:'Dump / disposal ($)',
 
-preview:"Quote preview",
+other:'Other ($)',
 
-clientS:"Client",
+concreteMeasurements:'Concrete Measurements',
 
-typeS:"Service",
+length:'Length (ft)',
 
-baseS:"Base cost",
+width:'Width (ft)',
 
-markupS:"Markup",
+thickness:'Thickness (in)',
 
-totalS:"Quote total",
+concreteYard:'Concrete ($ per cubic yard)',
 
-recent:"Recent quotes",
+rebar:'Rebar / mesh ($)',
 
-empty:"No quotes saved yet.",
+forms:'Forms ($)',
 
-saved:"Quote saved!"
+excavation:'Excavation / base ($)',
+
+delivery:'Delivery / pump ($)',
+
+labor:'Labor ($)',
+
+generalCosts:'General Costs',
+
+materials:'Materials ($)',
+
+pricing:'Pricing',
+
+overhead:'Overhead (%)',
+
+profit:'Profit / markup (%)',
+
+quoteSummary:'Quote Summary',
+
+baseCost:'Base cost',
+
+overheadCost:'Overhead',
+
+profitCost:'Profit',
+
+recommended:'Recommended quote',
+
+save:'Save Quote',
+
+print:'Print',
+
+clear:'Clear',
+
+note:'Prototype calculation. Review material quantities, local labor rates, taxes, permits and project conditions before sending a final quote.',
+
+recent:'Recent Quotes'
+
+},
+
+es:{
+
+project:'Información del Proyecto',
+
+client:'Cliente',
+
+company:'Compañía',
+
+job:'Trabajo / Dirección',
+
+roofMeasurements:'Medidas del Techo',
+
+roofArea:'Área del techo (pies²)',
+
+waste:'Desperdicio (%)',
+
+materialSquare:'Tejas / material ($ por square)',
+
+under:'Underlayment ($)',
+
+flash:'Flashing ($)',
+
+vents:'Ventilas / accesorios ($)',
+
+tear:'Retiro ($ por square)',
+
+install:'Instalación ($ por square)',
+
+dump:'Basurero / desecho ($)',
+
+other:'Otros ($)',
+
+concreteMeasurements:'Medidas del Concreto',
+
+length:'Largo (pies)',
+
+width:'Ancho (pies)',
+
+thickness:'Espesor (pulgadas)',
+
+concreteYard:'Concreto ($ por yarda cúbica)',
+
+rebar:'Varilla / malla ($)',
+
+forms:'Formas ($)',
+
+excavation:'Excavación / base ($)',
+
+delivery:'Entrega / bomba ($)',
+
+labor:'Mano de obra ($)',
+
+generalCosts:'Costos Generales',
+
+materials:'Materiales ($)',
+
+pricing:'Precios',
+
+overhead:'Gastos generales (%)',
+
+profit:'Ganancia / margen (%)',
+
+quoteSummary:'Resumen de Cotización',
+
+baseCost:'Costo base',
+
+overheadCost:'Gastos generales',
+
+profitCost:'Ganancia',
+
+recommended:'Precio recomendado',
+
+save:'Guardar Cotización',
+
+print:'Imprimir',
+
+clear:'Limpiar',
+
+note:'Cálculo de prototipo. Revisa cantidades, precios locales, impuestos, permisos y condiciones del proyecto antes de enviar una cotización final.',
+
+recent:'Cotizaciones Recientes'
 
 }
 
 };
 
-function money(n){
+function v(id){
 
-return new Intl.NumberFormat(
-
-document.documentElement.lang==="es"?"es-US":"en-US",
-
-{style:"currency",currency:"USD"}
-
-).format(n);
+return parseFloat(document.getElementById(id)?.value)||0;
 
 }
 
-function calculate(){
+function money(x){
 
-let materials=Number(document.getElementById("materials").value)||0;
+return '$'+x.toLocaleString('en-US',{
 
-let labor=Number(document.getElementById("labor").value)||0;
+minimumFractionDigits:2,
 
-let other=Number(document.getElementById("other").value)||0;
-
-let margin=Number(document.getElementById("margin").value)||0;
-
-let base=materials+labor+other;
-
-let markup=base*margin/100;
-
-let total=base+markup;
-
-document.getElementById("sClient").textContent=
-
-document.getElementById("client").value||"—";
-
-document.getElementById("sType").textContent=service;
-
-document.getElementById("sBase").textContent=money(base);
-
-document.getElementById("sMarkup").textContent=money(markup);
-
-document.getElementById("sTotal").textContent=money(total);
-
-return {base,markup,total};
-
-}
-
-document.querySelector(".services").addEventListener("click",function(e){
-
-if(e.target.classList.contains("chip")){
-
-document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
-
-e.target.classList.add("active");
-
-service=e.target.dataset.service;
-
-calculate();
-
-}
+maximumFractionDigits:2
 
 });
 
-["client","materials","labor","other","margin"].forEach(id=>{
+}
 
-document.getElementById(id).addEventListener("input",calculate);
+function setLang(x){
+
+lang=x;
+
+document.getElementById('enBtn').classList.toggle('active',x==='en');
+
+document.getElementById('esBtn').classList.toggle('active',x==='es');
+
+document.querySelectorAll('[data-i]').forEach(e=>{
+
+let k=e.dataset.i;
+
+if(T[x][k]) e.textContent=T[x][k];
 
 });
 
-function loadQuotes(){
+calc();
 
-let quotes=JSON.parse(localStorage.getItem("quoteflow_quotes")||"[]");
-
-let history=document.getElementById("history");
-
-if(!quotes.length){
-
-history.innerHTML="<p>"+translations[document.getElementById("lang").value].empty+"</p>";
-
-return;
+renderSaved();
 
 }
 
-history.innerHTML=quotes.slice(-5).reverse().map(q=>`
+function setType(x){
 
-<div class="quote">
+type=x;
 
-<div>
+['roof','concrete','general'].forEach(k=>{
 
-<strong>${q.client||"—"}</strong><br>
-
-<small>${q.service} · ${q.date}</small>
-
-</div>
-
-<strong>${money(q.total)}</strong>
-
-</div>
-
-`).join("");
-
-}
-
-document.getElementById("save").onclick=function(){
-
-let result=calculate();
-
-let quotes=JSON.parse(localStorage.getItem("quoteflow_quotes")||"[]");
-
-quotes.push({
-
-client:document.getElementById("client").value,
-
-service:service,
-
-total:result.total,
-
-date:new Date().toLocaleDateString()
+document.getElementById(k+'Btn').classList.toggle('active',k===x);
 
 });
 
-localStorage.setItem("quoteflow_quotes",JSON.stringify(quotes));
+document.getElementById('roofFields').style.display=x==='roof'?'block':'none';
 
-loadQuotes();
+document.getElementById('concreteFields').style.display=x==='concrete'?'block':'none';
 
-let toast=document.getElementById("toast");
+document.getElementById('generalFields').style.display=x==='general'?'block':'none';
 
-toast.textContent=translations[document.getElementById("lang").value].saved;
+calc();
 
-toast.style.display="block";
+}
 
-setTimeout(()=>toast.style.display="none",1800);
+function calc(){
+
+let base=0;
+
+let m1=0;
+
+let m2=0;
+
+let l1='Squares';
+
+let l2='Adjusted squares';
+
+if(type==='roof'){
+
+let sq=v('roofArea')/100;
+
+let adj=sq*(1+v('roofWaste')/100);
+
+base=
+
+adj*v('materialSquare')+
+
+v('under')+
+
+v('flash')+
+
+v('vents')+
+
+adj*v('tear')+
+
+adj*v('install')+
+
+v('dump')+
+
+v('otherRoof');
+
+m1=sq;
+
+m2=adj;
+
+}
+
+else if(type==='concrete'){
+
+let yd=
+
+v('length')*
+
+v('width')*
+
+(v('thickness')/12)/27;
+
+let adj=
+
+yd*(1+v('concreteWaste')/100);
+
+base=
+
+adj*v('concreteYard')+
+
+v('rebar')+
+
+v('forms')+
+
+v('excavation')+
+
+v('delivery')+
+
+v('laborConcrete')+
+
+v('otherConcrete');
+
+m1=yd;
+
+m2=adj;
+
+l1='Cubic yards';
+
+l2='With waste';
+
+}
+
+else{
+
+base=
+
+v('materials')+
+
+v('laborGeneral')+
+
+v('otherGeneral');
+
+l1='Base';
+
+l2='Cost';
+
+}
+
+let oh=
+
+base*v('overhead')/100;
+
+let profit=
+
+(base+oh)*v('profit')/100;
+
+let total=
+
+base+oh+profit;
+
+document.getElementById('metric1Label').textContent=l1;
+
+document.getElementById('metric2Label').textContent=l2;
+
+document.getElementById('metric1Value').textContent=m1.toFixed(2);
+
+document.getElementById('metric2Value').textContent=m2.toFixed(2);
+
+document.getElementById('base').textContent=money(base);
+
+document.getElementById('oh').textContent=money(oh);
+
+document.getElementById('pr').textContent=money(profit);
+
+document.getElementById('total').textContent=money(total);
+
+}
+
+function saveQuote(){
+
+calc();
+
+let item={
+
+type:type,
+
+client:document.getElementById('client').value,
+
+job:document.getElementById('job').value,
+
+total:document.getElementById('total').textContent,
+
+date:new Date().toLocaleString()
 
 };
 
-document.getElementById("clear").onclick=function(){
+let a=
 
-document.getElementById("client").value="";
+JSON.parse(localStorage.getItem('quoteflow')||'[]');
 
-document.getElementById("company").value="";
+a.unshift(item);
 
-document.getElementById("job").value="";
+a=a.slice(0,8);
 
-document.getElementById("materials").value=0;
+localStorage.setItem(
 
-document.getElementById("labor").value=0;
+'quoteflow',
 
-document.getElementById("other").value=0;
+JSON.stringify(a)
 
-document.getElementById("margin").value=20;
+);
 
-calculate();
-
-};
-
-function changeLanguage(){
-
-let lang=document.getElementById("lang").value;
-
-let t=translations[lang];
-
-document.documentElement.lang=lang;
-
-Object.keys(t).forEach(key=>{
-
-let element=document.getElementById(key);
-
-if(element) element.textContent=t[key];
-
-});
-
-loadQuotes();
-
-calculate();
+renderSaved();
 
 }
 
-document.getElementById("lang").addEventListener("change",changeLanguage);
+function renderSaved(){
 
-calculate();
+let a=
 
-loadQuotes();
+JSON.parse(localStorage.getItem('quoteflow')||'[]');
+
+let box=document.getElementById('savedList');
+
+box.innerHTML=a.length?
+
+'':
+
+'<div class="note">No saved quotes yet.</div>';
+
+a.forEach(q=>{
+
+let d=document.createElement('div');
+
+d.className='quote-item';
+
+d.innerHTML=
+
+'<b>'+q.type.toUpperCase()+
+
+'</b> · '+(q.client||'Client')+
+
+'<br>'+q.job+
+
+'<br><strong>'+q.total+
+
+'</strong> · '+q.date;
+
+box.appendChild(d);
+
+});
+
+}
+
+function clearAll(){
+
+document.querySelectorAll('input').forEach(i=>{
+
+if(
+
+i.id!=='thickness' &&
+
+i.id!=='roofWaste' &&
+
+i.id!=='concreteWaste' &&
+
+i.id!=='overhead' &&
+
+i.id!=='profit'
+
+){
+
+i.value='';
+
+}
+
+});
+
+document.getElementById('thickness').value=4;
+
+document.getElementById('roofWaste').value=10;
+
+document.getElementById('concreteWaste').value=10;
+
+document.getElementById('overhead').value=10;
+
+document.getElementById('profit').value=20;
+
+calc();
+
+}
+
+renderSaved();
+
+calc();
 
 </script>
 
 </body>
 
 </html>
-
