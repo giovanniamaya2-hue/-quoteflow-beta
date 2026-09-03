@@ -1,1 +1,569 @@
+<!doctype html>
 
+<html lang="es">
+
+<head>
+
+<meta charset="utf-8">
+
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>QuoteFlow Beta</title>
+
+<style>
+
+*{box-sizing:border-box}
+
+body{margin:0;background:#08111f;color:#f4f7fb;font-family:Arial,sans-serif}
+
+.app{max-width:900px;margin:auto;padding:20px}
+
+header{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px}
+
+.logo{background:#19c6b4;color:#061b19;width:45px;height:45px;border-radius:14px;display:grid;place-items:center;font-size:25px;font-weight:bold}
+
+.brand{display:flex;gap:12px;align-items:center}
+
+h1,h2,h3{margin:0}
+
+small,p{color:#9eacbf}
+
+select,input,textarea,button{font:inherit}
+
+select,input,textarea{width:100%;background:#0a1525;color:white;border:1px solid #26364b;border-radius:10px;padding:12px}
+
+textarea{min-height:80px}
+
+.card{background:#101c2e;border:1px solid #26364b;border-radius:18px;padding:18px;margin-bottom:16px}
+
+.hero{padding:22px}
+
+.hero h2{font-size:28px;margin-bottom:8px}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+
+.fields{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+
+.full{grid-column:1/-1}
+
+label{display:block;color:#9eacbf;font-size:13px;margin-bottom:6px}
+
+.services{display:flex;gap:8px;margin-bottom:15px;flex-wrap:wrap}
+
+.chip{width:auto;border:1px solid #26364b;background:#0a1525;color:#dbe5f2;border-radius:20px;padding:9px 14px}
+
+.chip.active{background:#19c6b4;color:#06201d;border-color:#19c6b4}
+
+.actions{display:flex;gap:10px;margin-top:16px}
+
+.primary{flex:1;background:#19c6b4;border:0;border-radius:10px;padding:13px;font-weight:bold}
+
+.secondary{background:transparent;color:white;border:1px solid #26364b;border-radius:10px;padding:13px}
+
+.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #26364b}
+
+.total{font-size:22px;border-bottom:0;padding-top:15px}
+
+.quote{display:flex;justify-content:space-between;border-bottom:1px solid #26364b;padding:12px 0}
+
+.note{font-size:12px;line-height:1.5}
+
+.toast{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);background:#19c6b4;color:#06201d;padding:12px 18px;border-radius:10px;font-weight:bold;display:none}
+
+@media(max-width:700px){.grid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.full{grid-column:auto}}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<header>
+
+<div class="brand">
+
+<div class="logo">Q</div>
+
+<div>
+
+<h1>QuoteFlow <span style="color:#19c6b4">Beta</span></h1>
+
+<small id="tagline">Cotizaciones profesionales, de forma sencilla.</small>
+
+</div>
+
+</div>
+
+<select id="lang" style="width:auto">
+
+<option value="es">ES</option>
+
+<option value="en">EN</option>
+
+</select>
+
+</header>
+
+<div class="card hero">
+
+<h2 id="title">Crea una cotización profesional en minutos.</h2>
+
+<p id="subtitle">Diseñada para Roofing, concreto y servicios para el hogar.</p>
+
+</div>
+
+<div class="grid">
+
+<div class="card">
+
+<h3 id="details">Detalles de la cotización</h3>
+
+<div class="services">
+
+<button class="chip active" data-service="Roofing">Roofing</button>
+
+<button class="chip" data-service="Concrete">Concreto</button>
+
+<button class="chip" data-service="General">General</button>
+
+</div>
+
+<div class="fields">
+
+<div>
+
+<label id="clientL">Nombre del cliente</label>
+
+<input id="client" placeholder="Juan Pérez">
+
+</div>
+
+<div>
+
+<label id="companyL">Tu compañía</label>
+
+<input id="company" placeholder="ABC Construction">
+
+</div>
+
+<div class="full">
+
+<label id="jobL">Descripción del trabajo</label>
+
+<textarea id="job" placeholder="Roof replacement, driveway, repair..."></textarea>
+
+</div>
+
+<div>
+
+<label id="materialL">Materiales</label>
+
+<input id="materials" type="number" min="0" value="0">
+
+</div>
+
+<div>
+
+<label id="laborL">Mano de obra</label>
+
+<input id="labor" type="number" min="0" value="0">
+
+</div>
+
+<div>
+
+<label id="otherL">Otros costos</label>
+
+<input id="other" type="number" min="0" value="0">
+
+</div>
+
+<div>
+
+<label id="marginL">Margen %</label>
+
+<input id="margin" type="number" min="0" value="20">
+
+</div>
+
+</div>
+
+<div class="actions">
+
+<button class="primary" id="save">Guardar cotización</button>
+
+<button class="secondary" id="clear">Limpiar</button>
+
+</div>
+
+<p class="note" id="note">
+
+Beta: las cotizaciones se guardan solamente en este navegador para pruebas.
+
+</p>
+
+</div>
+
+<div>
+
+<div class="card">
+
+<h3 id="preview">Vista previa</h3>
+
+<div class="row">
+
+<span id="clientS">Cliente</span>
+
+<strong id="sClient">—</strong>
+
+</div>
+
+<div class="row">
+
+<span id="typeS">Servicio</span>
+
+<strong id="sType">Roofing</strong>
+
+</div>
+
+<div class="row">
+
+<span id="baseS">Costo base</span>
+
+<strong id="sBase">$0.00</strong>
+
+</div>
+
+<div class="row">
+
+<span id="markupS">Margen</span>
+
+<strong id="sMarkup">$0.00</strong>
+
+</div>
+
+<div class="row total">
+
+<span id="totalS">Total</span>
+
+<strong id="sTotal">$0.00</strong>
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3 id="recent">Cotizaciones recientes</h3>
+
+<div id="history">
+
+<p id="empty">No hay cotizaciones guardadas.</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="toast" id="toast">¡Cotización guardada!</div>
+
+<script>
+
+let service="Roofing";
+
+const translations={
+
+es:{
+
+tagline:"Cotizaciones profesionales, de forma sencilla.",
+
+title:"Crea una cotización profesional en minutos.",
+
+subtitle:"Diseñada para Roofing, concreto y servicios para el hogar.",
+
+details:"Detalles de la cotización",
+
+clientL:"Nombre del cliente",
+
+companyL:"Tu compañía",
+
+jobL:"Descripción del trabajo",
+
+materialL:"Materiales",
+
+laborL:"Mano de obra",
+
+otherL:"Otros costos",
+
+marginL:"Margen %",
+
+save:"Guardar cotización",
+
+clear:"Limpiar",
+
+note:"Beta: las cotizaciones se guardan solamente en este navegador para pruebas.",
+
+preview:"Vista previa",
+
+clientS:"Cliente",
+
+typeS:"Servicio",
+
+baseS:"Costo base",
+
+markupS:"Margen",
+
+totalS:"Total",
+
+recent:"Cotizaciones recientes",
+
+empty:"No hay cotizaciones guardadas.",
+
+saved:"¡Cotización guardada!"
+
+},
+
+en:{
+
+tagline:"Professional estimates, made simple.",
+
+title:"Create a professional quote in minutes.",
+
+subtitle:"Built for roofing, concrete, and home-service contractors.",
+
+details:"Quote details",
+
+clientL:"Client name",
+
+companyL:"Your company",
+
+jobL:"Job description",
+
+materialL:"Materials",
+
+laborL:"Labor",
+
+otherL:"Other costs",
+
+marginL:"Markup %",
+
+save:"Save quote",
+
+clear:"Clear",
+
+note:"Beta: quotes are stored only in this browser for testing.",
+
+preview:"Quote preview",
+
+clientS:"Client",
+
+typeS:"Service",
+
+baseS:"Base cost",
+
+markupS:"Markup",
+
+totalS:"Quote total",
+
+recent:"Recent quotes",
+
+empty:"No quotes saved yet.",
+
+saved:"Quote saved!"
+
+}
+
+};
+
+function money(n){
+
+return new Intl.NumberFormat(
+
+document.documentElement.lang==="es"?"es-US":"en-US",
+
+{style:"currency",currency:"USD"}
+
+).format(n);
+
+}
+
+function calculate(){
+
+let materials=Number(document.getElementById("materials").value)||0;
+
+let labor=Number(document.getElementById("labor").value)||0;
+
+let other=Number(document.getElementById("other").value)||0;
+
+let margin=Number(document.getElementById("margin").value)||0;
+
+let base=materials+labor+other;
+
+let markup=base*margin/100;
+
+let total=base+markup;
+
+document.getElementById("sClient").textContent=
+
+document.getElementById("client").value||"—";
+
+document.getElementById("sType").textContent=service;
+
+document.getElementById("sBase").textContent=money(base);
+
+document.getElementById("sMarkup").textContent=money(markup);
+
+document.getElementById("sTotal").textContent=money(total);
+
+return {base,markup,total};
+
+}
+
+document.querySelector(".services").addEventListener("click",function(e){
+
+if(e.target.classList.contains("chip")){
+
+document.querySelectorAll(".chip").forEach(x=>x.classList.remove("active"));
+
+e.target.classList.add("active");
+
+service=e.target.dataset.service;
+
+calculate();
+
+}
+
+});
+
+["client","materials","labor","other","margin"].forEach(id=>{
+
+document.getElementById(id).addEventListener("input",calculate);
+
+});
+
+function loadQuotes(){
+
+let quotes=JSON.parse(localStorage.getItem("quoteflow_quotes")||"[]");
+
+let history=document.getElementById("history");
+
+if(!quotes.length){
+
+history.innerHTML="<p>"+translations[document.getElementById("lang").value].empty+"</p>";
+
+return;
+
+}
+
+history.innerHTML=quotes.slice(-5).reverse().map(q=>`
+
+<div class="quote">
+
+<div>
+
+<strong>${q.client||"—"}</strong><br>
+
+<small>${q.service} · ${q.date}</small>
+
+</div>
+
+<strong>${money(q.total)}</strong>
+
+</div>
+
+`).join("");
+
+}
+
+document.getElementById("save").onclick=function(){
+
+let result=calculate();
+
+let quotes=JSON.parse(localStorage.getItem("quoteflow_quotes")||"[]");
+
+quotes.push({
+
+client:document.getElementById("client").value,
+
+service:service,
+
+total:result.total,
+
+date:new Date().toLocaleDateString()
+
+});
+
+localStorage.setItem("quoteflow_quotes",JSON.stringify(quotes));
+
+loadQuotes();
+
+let toast=document.getElementById("toast");
+
+toast.textContent=translations[document.getElementById("lang").value].saved;
+
+toast.style.display="block";
+
+setTimeout(()=>toast.style.display="none",1800);
+
+};
+
+document.getElementById("clear").onclick=function(){
+
+document.getElementById("client").value="";
+
+document.getElementById("company").value="";
+
+document.getElementById("job").value="";
+
+document.getElementById("materials").value=0;
+
+document.getElementById("labor").value=0;
+
+document.getElementById("other").value=0;
+
+document.getElementById("margin").value=20;
+
+calculate();
+
+};
+
+function changeLanguage(){
+
+let lang=document.getElementById("lang").value;
+
+let t=translations[lang];
+
+document.documentElement.lang=lang;
+
+Object.keys(t).forEach(key=>{
+
+let element=document.getElementById(key);
+
+if(element) element.textContent=t[key];
+
+});
+
+loadQuotes();
+
+calculate();
+
+}
+
+document.getElementById("lang").addEventListener("change",changeLanguage);
+
+calculate();
+
+loadQuotes();
+
+</script>
+
+</body>
+
+</html>
