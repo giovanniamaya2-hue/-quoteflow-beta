@@ -12,83 +12,591 @@
 
 <style>
 
-:root{--bg:#090a0c;--card:#15171b;--line:#2b3038;--text:#f7f8fa;--muted:#9da4ae;--accent:#ff7a00;--good:#39d98a}
+:root{
+
+--bg:#090a0c;
+
+--card:#15171b;
+
+--line:#2b3038;
+
+--text:#f7f8fa;
+
+--muted:#9da4ae;
+
+--accent:#ff7a00;
+
+--good:#39d98a
+
+}
 
 *{box-sizing:border-box}
 
-body{margin:0;background:var(--bg);color:var(--text);font-family:system-ui,-apple-system,Segoe UI,sans-serif}
+body{
 
-.app{max-width:1100px;margin:auto;padding:16px}
+margin:0;
 
-.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+background:var(--bg);
 
-.logo{font-size:27px;font-weight:900}.logo b{color:var(--accent)}.sub{font-size:10px;color:var(--muted)}
+color:var(--text);
 
-button,input,select,textarea{font:inherit}
+font-family:system-ui,-apple-system,Segoe UI,sans-serif
 
-button{cursor:pointer}
+}
 
-.btn,.chip,.tab{background:#1c1f24;color:#fff;border:1px solid var(--line);border-radius:11px;padding:10px 13px;font-weight:800}
+.app{
 
-button.primary,.chip.on,.tab.on{background:var(--accent);border-color:var(--accent)}
+max-width:1100px;
 
-input,select,textarea{width:100%;background:#0d0f12;color:#fff;border:1px solid var(--line);border-radius:10px;padding:11px}
+margin:auto;
 
-textarea{min-height:90px}
+padding:16px
 
-.hero,.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:17px;margin-bottom:14px}
+}
 
-.hero h1{margin:0 0 5px}.hero p,.small,.empty{color:var(--muted);font-size:12px}
+.top{
 
-.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:14px}
+display:flex;
 
-.tab{white-space:nowrap}
+justify-content:space-between;
 
-.grid{display:grid;grid-template-columns:1.5fr .85fr;gap:14px}
+align-items:center;
 
-.fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+margin-bottom:14px
 
-.full{grid-column:1/-1}
+}
 
-.field label{display:block;color:var(--muted);font-size:11px;font-weight:800;margin:0 0 5px}
+.logo{
 
-h2{font-size:17px}
+font-size:27px;
 
-h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
+font-weight:900
 
-.tradegrid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+}
 
-.summary{position:sticky;top:10px}
+.logo b{
 
-.row{display:flex;justify-content:space-between;padding:9px 0;border-bottom:1px solid #272b32;font-size:13px}
+color:var(--accent)
 
-.total{font-size:38px;font-weight:950;color:var(--accent);margin:5px 0 15px}
+}
 
-.bar{height:7px;background:#252a31;border-radius:9px;overflow:hidden}
+.sub{
 
-.bar i{display:block;height:100%;background:var(--good);width:0}
+font-size:10px;
 
-.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+color:var(--muted)
 
-.tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+}
 
-.tier{background:#101216;border:1px solid var(--line);border-radius:12px;padding:11px}
+button,input,select,textarea{
 
-.price{font-size:20px;font-weight:900;color:var(--accent)}
+font:inherit
 
-.preview{background:#fff;color:#17181b;border-radius:14px;padding:20px}
+}
 
-.hidden{display:none!important}
+button{
 
-.item,.log{border:1px solid var(--line);border-radius:11px;padding:10px;margin-top:8px;background:#101216}
+cursor:pointer
 
-.alert{padding:10px;border-radius:10px;background:#211b10;border:1px solid #51401f;color:#ffe1a3;margin-top:10px}
+}
 
-@media(max-width:800px){.grid{grid-template-columns:1fr}.summary{position:static}}
+.btn,.chip,.tab{
 
-@media(max-width:550px){.fields{grid-template-columns:1fr}.tradegrid{grid-template-columns:repeat(2,1fr)}.tiers{grid-template-columns:1fr}}
+background:#1c1f24;
 
-@media print{.no-print,.hero,.tabs{display:none!important}body{background:#fff;color:#111}.card{border:0;background:#fff}.grid{display:block}.summary{margin-top:15px}}
+color:#fff;
+
+border:1px solid var(--line);
+
+border-radius:11px;
+
+padding:10px 13px;
+
+font-weight:800
+
+}
+
+button.primary,.chip.on,.tab.on{
+
+background:var(--accent);
+
+border-color:var(--accent)
+
+}
+
+input,select,textarea{
+
+width:100%;
+
+background:#0d0f12;
+
+color:#fff;
+
+border:1px solid var(--line);
+
+border-radius:10px;
+
+padding:11px
+
+}
+
+textarea{
+
+min-height:90px
+
+}
+
+.hero,.card{
+
+background:var(--card);
+
+border:1px solid var(--line);
+
+border-radius:18px;
+
+padding:17px;
+
+margin-bottom:14px
+
+}
+
+.hero h1{
+
+margin:0 0 5px
+
+}
+
+.hero p,.small,.empty{
+
+color:var(--muted);
+
+font-size:12px
+
+}
+
+.tabs{
+
+display:flex;
+
+gap:8px;
+
+overflow:auto;
+
+margin-bottom:14px
+
+}
+
+.tab{
+
+white-space:nowrap
+
+}
+
+.grid{
+
+display:grid;
+
+grid-template-columns:1.5fr .85fr;
+
+gap:14px
+
+}
+
+.fields{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:10px
+
+}
+
+.full{
+
+grid-column:1/-1
+
+}
+
+.field label{
+
+display:block;
+
+color:var(--muted);
+
+font-size:11px;
+
+font-weight:800;
+
+margin:0 0 5px
+
+}
+
+h2{
+
+font-size:17px
+
+}
+
+h3{
+
+font-size:12px;
+
+text-transform:uppercase;
+
+color:#d8dde5;
+
+margin:20px 0 9px
+
+}
+
+.tradegrid{
+
+display:grid;
+
+grid-template-columns:repeat(4,1fr);
+
+gap:8px
+
+}
+
+.summary{
+
+position:sticky;
+
+top:10px
+
+}
+
+.row{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:9px 0;
+
+border-bottom:1px solid #272b32;
+
+font-size:13px
+
+}
+
+.total{
+
+font-size:38px;
+
+font-weight:950;
+
+color:var(--accent);
+
+margin:5px 0 15px
+
+}
+
+.bar{
+
+height:7px;
+
+background:#252a31;
+
+border-radius:9px;
+
+overflow:hidden
+
+}
+
+.bar i{
+
+display:block;
+
+height:100%;
+
+background:var(--good);
+
+width:0
+
+}
+
+.actions{
+
+display:flex;
+
+gap:8px;
+
+flex-wrap:wrap;
+
+margin-top:12px
+
+}
+
+.tiers{
+
+display:grid;
+
+grid-template-columns:repeat(3,1fr);
+
+gap:8px
+
+}
+
+.tier{
+
+background:#101216;
+
+border:1px solid var(--line);
+
+border-radius:12px;
+
+padding:11px
+
+}
+
+.price{
+
+font-size:20px;
+
+font-weight:900;
+
+color:var(--accent)
+
+}
+
+.preview{
+
+background:#fff;
+
+color:#17181b;
+
+border-radius:14px;
+
+padding:20px
+
+}
+
+.hidden{
+
+display:none!important
+
+}
+
+.item,.log{
+
+border:1px solid var(--line);
+
+border-radius:11px;
+
+padding:10px;
+
+margin-top:8px;
+
+background:#101216
+
+}
+
+.alert{
+
+padding:10px;
+
+border-radius:10px;
+
+background:#211b10;
+
+border:1px solid #51401f;
+
+color:#ffe1a3;
+
+margin-top:10px
+
+}
+
+.concrete-result{
+
+margin-top:14px;
+
+padding:15px;
+
+border:1px solid #31516c;
+
+background:#0e1720;
+
+border-radius:14px
+
+}
+
+.concrete-result-title{
+
+color:#9ecfff;
+
+font-size:11px;
+
+font-weight:900;
+
+text-transform:uppercase;
+
+margin-bottom:8px
+
+}
+
+.yard-big{
+
+font-size:34px;
+
+font-weight:950;
+
+color:var(--accent);
+
+line-height:1
+
+}
+
+.yard-label{
+
+color:var(--muted);
+
+font-size:11px;
+
+margin-top:4px
+
+}
+
+.yard-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr 1fr;
+
+gap:8px;
+
+margin-top:12px
+
+}
+
+.yard-box{
+
+background:#101216;
+
+border:1px solid var(--line);
+
+border-radius:10px;
+
+padding:10px
+
+}
+
+.yard-box strong{
+
+display:block;
+
+font-size:18px;
+
+margin-top:3px
+
+}
+
+.order-box{
+
+margin-top:10px;
+
+padding:12px;
+
+border-radius:11px;
+
+background:#17231d;
+
+border:1px solid #315d45
+
+}
+
+.order-box strong{
+
+color:var(--good);
+
+font-size:22px
+
+}
+
+@media(max-width:800px){
+
+.grid{
+
+grid-template-columns:1fr
+
+}
+
+.summary{
+
+position:static
+
+}
+
+}
+
+@media(max-width:550px){
+
+.fields{
+
+grid-template-columns:1fr
+
+}
+
+.tradegrid{
+
+grid-template-columns:repeat(2,1fr)
+
+}
+
+.tiers{
+
+grid-template-columns:1fr
+
+}
+
+.yard-grid{
+
+grid-template-columns:1fr
+
+}
+
+}
+
+@media print{
+
+.no-print,.hero,.tabs{
+
+display:none!important
+
+}
+
+body{
+
+background:#fff;
+
+color:#111
+
+}
+
+.card{
+
+border:0;
+
+background:#fff
+
+}
+
+.grid{
+
+display:block
+
+}
+
+.summary{
+
+margin-top:15px
+
+}
+
+}
 
 </style>
 
@@ -100,7 +608,13 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 <header class="top">
 
-<div class="logo">Quote<b>Flow</b> <span class="sub">CONSTRUCTION BETA</span></div>
+<div class="logo">
+
+Quote<b>Flow</b>
+
+<span class="sub">CONSTRUCTION BETA</span>
+
+</div>
 
 <div>
 
@@ -114,21 +628,45 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 <section class="hero">
 
-<h1 id="hero">Estimate faster. Protect your profit.</h1>
+<h1 id="hero">
 
-<p id="heroSub">One simple quoting workspace for construction contractors.</p>
+Estimate faster. Protect your profit.
+
+</h1>
+
+<p id="heroSub">
+
+One simple quoting workspace for construction contractors.
+
+</p>
 
 </section>
 
 <nav class="tabs no-print">
 
-<button class="tab on" id="tabEstimate" onclick="showTab('estimate')">Estimate</button>
+<button class="tab on" onclick="showTab('estimate')">
 
-<button class="tab" id="tabPreview" onclick="showTab('preview')">Customer Preview</button>
+Estimate
 
-<button class="tab" id="tabTools" onclick="showTab('tools')">Job Tools</button>
+</button>
 
-<button class="tab" id="tabSaved" onclick="showTab('saved')">Saved Quotes</button>
+<button class="tab" onclick="showTab('preview')">
+
+Customer Preview
+
+</button>
+
+<button class="tab" onclick="showTab('tools')">
+
+Job Tools
+
+</button>
+
+<button class="tab" onclick="showTab('saved')">
+
+Saved Quotes
+
+</button>
 
 </nav>
 
@@ -136,13 +674,17 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 <main class="card">
 
-<h2 id="project">Project & Customer</h2>
+<h2>
+
+Project & Customer
+
+</h2>
 
 <div class="fields">
 
 <div class="field">
 
-<label id="clientLabel">Client</label>
+<label>Client</label>
 
 <input id="client" placeholder="Customer name">
 
@@ -150,7 +692,7 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 <div class="field">
 
-<label id="companyLabel">Your company</label>
+<label>Your company</label>
 
 <input id="company" placeholder="Company name">
 
@@ -158,7 +700,7 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 <div class="field full">
 
-<label id="addressLabel">Job address</label>
+<label>Job address</label>
 
 <input id="address" placeholder="Street, city, state">
 
@@ -166,19 +708,27 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 </div>
 
-<h3 id="tradeLabel">Choose trade</h3>
+<h3>
+
+Choose trade
+
+</h3>
 
 <div class="tradegrid" id="trades"></div>
 
 <div id="dynamic"></div>
 
-<h3>Pricing</h3>
+<h3>
+
+Pricing
+
+</h3>
 
 <div class="fields">
 
 <div class="field">
 
-<label id="overLabel">Overhead %</label>
+<label>Overhead %</label>
 
 <input id="over" type="number" value="10" oninput="calc()">
 
@@ -186,7 +736,7 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 <div class="field">
 
-<label id="profitLabel">Profit / markup %</label>
+<label>Profit / markup %</label>
 
 <input id="profit" type="number" value="20" oninput="calc()">
 
@@ -210,15 +760,27 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 </div>
 
-<h3>Custom line items</h3>
+<h3>
+
+Custom line items
+
+</h3>
 
 <div id="items"></div>
 
 <div class="actions no-print">
 
-<button class="btn" onclick="addItem()">+ Add item</button>
+<button class="btn" onclick="addItem()">
 
-<button class="btn primary" onclick="saveQuote()">Save quote</button>
++ Add item
+
+</button>
+
+<button class="btn primary" onclick="saveQuote()">
+
+Save quote
+
+</button>
 
 </div>
 
@@ -228,7 +790,11 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 <aside class="card summary">
 
-<h2>Quote Summary</h2>
+<h2>
+
+Quote Summary
+
+</h2>
 
 <div class="row">
 
@@ -270,13 +836,23 @@ h3{font-size:12px;text-transform:uppercase;color:#d8dde5;margin:20px 0 9px}
 
 </div>
 
-<p class="small">Recommended customer price</p>
+<p class="small">
 
-<div class="total" id="total">$0.00</div>
+Recommended customer price
+
+</p>
+
+<div class="total" id="total">
+
+$0.00
+
+</div>
 
 <p class="small">
 
-Projected gross margin <b id="margin">0%</b>
+Projected gross margin
+
+<b id="margin">0%</b>
 
 </p>
 
@@ -286,7 +862,11 @@ Projected gross margin <b id="margin">0%</b>
 
 </div>
 
-<h3>Good / Better / Best</h3>
+<h3>
+
+Good / Better / Best
+
+</h3>
 
 <div class="tiers">
 
@@ -318,11 +898,23 @@ Projected gross margin <b id="margin">0%</b>
 
 <div class="actions no-print">
 
-<button class="btn primary" onclick="showTab('preview')">Customer Preview</button>
+<button class="btn primary" onclick="showTab('preview')">
 
-<button class="btn" onclick="window.print()">Print / PDF</button>
+Customer Preview
 
-<button class="btn" onclick="clearAll()">Clear</button>
+</button>
+
+<button class="btn" onclick="window.print()">
+
+Print / PDF
+
+</button>
+
+<button class="btn" onclick="clearAll()">
+
+Clear
+
+</button>
 
 </div>
 
@@ -340,9 +932,17 @@ Verify quantities, supplier prices, labor, permits, taxes and site conditions be
 
 <div class="actions no-print">
 
-<button class="btn" onclick="showTab('estimate')">← Back</button>
+<button class="btn" onclick="showTab('estimate')">
 
-<button class="btn primary" onclick="window.print()">Print</button>
+← Back
+
+</button>
+
+<button class="btn primary" onclick="window.print()">
+
+Print
+
+</button>
 
 </div>
 
@@ -354,7 +954,11 @@ Verify quantities, supplier prices, labor, permits, taxes and site conditions be
 
 <main class="card">
 
-<h2>Smart Scope Assistant</h2>
+<h2>
+
+Smart Scope Assistant
+
+</h2>
 
 <p class="small">
 
@@ -362,25 +966,37 @@ Describe the job and QuoteFlow suggests the trade.
 
 </p>
 
-<textarea id="description"
+<textarea
+
+id="description"
 
 oninput="smart()"
 
-placeholder="Example: Replace 28 squares of asphalt roof, tear-off one layer..."></textarea>
+placeholder="Example: Replace 28 squares of asphalt roof, tear-off one layer..."
+
+></textarea>
 
 <div id="smartResult"></div>
 
-<h2>Change Orders</h2>
+<h2>
+
+Change Orders
+
+</h2>
 
 <div class="fields">
 
 <input id="changeText" placeholder="Change description">
 
-<input id="changeAmount"
+<input
+
+id="changeAmount"
 
 type="number"
 
-placeholder="Added price $">
+placeholder="Added price $"
+
+>
 
 </div>
 
@@ -390,7 +1006,9 @@ class="btn primary"
 
 style="margin-top:10px"
 
-onclick="addChange()">
+onclick="addChange()"
+
+>
 
 Add change order
 
@@ -402,15 +1020,19 @@ Add change order
 
 <aside class="card">
 
-<h2>Daily Job Log</h2>
+<h2>
+
+Daily Job Log
+
+</h2>
 
 <textarea
 
 id="logText"
 
-placeholder="Crew, weather, progress, materials, issues...">
+placeholder="Crew, weather, progress, materials, issues..."
 
-</textarea>
+></textarea>
 
 <button
 
@@ -418,7 +1040,9 @@ class="btn primary"
 
 style="margin-top:10px"
 
-onclick="addLog()">
+onclick="addLog()"
+
+>
 
 Add daily log
 
@@ -432,7 +1056,11 @@ Add daily log
 
 <section id="saved" class="card hidden">
 
-<h2>Saved Quotes</h2>
+<h2>
+
+Saved Quotes
+
+</h2>
 
 <div id="savedList"></div>
 
@@ -496,29 +1124,51 @@ const num=x=>
 
 Number($(x)?.value)||0;
 
+/* LANGUAGE */
+
 function setLang(x){
 
 lang=x;
 
-$('en').classList.toggle('primary',x==='en');
+$('en').classList.toggle(
 
-$('es').classList.toggle('primary',x==='es');
+'primary',
+
+x==='en'
+
+);
+
+$('es').classList.toggle(
+
+'primary',
+
+x==='es'
+
+);
 
 $('hero').textContent=
 
 x==='en'
 
-?'Estimate faster. Protect your profit.'
+?
 
-:'Cotiza más rápido. Protege tu ganancia.';
+'Estimate faster. Protect your profit.'
+
+:
+
+'Cotiza más rápido. Protege tu ganancia.';
 
 $('heroSub').textContent=
 
 x==='en'
 
-?'One simple quoting workspace for construction contractors.'
+?
 
-:'Un espacio sencillo para cotizar trabajos de construcción.';
+'One simple quoting workspace for construction contractors.'
+
+:
+
+'Un espacio sencillo para cotizar trabajos de construcción.';
 
 renderTrades();
 
@@ -530,6 +1180,8 @@ calc();
 
 }
 
+/* TRADES */
+
 function renderTrades(){
 
 $('trades').innerHTML=
@@ -540,7 +1192,9 @@ trades.map(t=>`
 
 class="chip ${trade===t[0]?'on':''}"
 
-onclick="setTrade('${t[0]}')">
+onclick="setTrade('${t[0]}')"
+
+>
 
 ${t[1]}
 
@@ -564,6 +1218,8 @@ calc();
 
 }
 
+/* DYNAMIC FORMS */
+
 function renderDynamic(){
 
 let h='';
@@ -572,7 +1228,11 @@ if(trade==='roof'){
 
 h=`
 
-<h3>Roof Measurements</h3>
+<h3>
+
+Roof Measurements
+
+</h3>
 
 <div class="fields">
 
@@ -642,7 +1302,11 @@ else if(trade==='concrete'){
 
 h=`
 
-<h3>Concrete Measurements</h3>
+<h3>
+
+Concrete Measurements
+
+</h3>
 
 <div class="fields">
 
@@ -650,7 +1314,7 @@ h=`
 
 <label>Length ft</label>
 
-<input id="len" type="number" value="0" oninput="calc()">
+<input id="len" type="number" step="0.01" value="0" oninput="calc()">
 
 </div>
 
@@ -658,7 +1322,7 @@ h=`
 
 <label>Width ft</label>
 
-<input id="wid" type="number" value="0" oninput="calc()">
+<input id="wid" type="number" step="0.01" value="0" oninput="calc()">
 
 </div>
 
@@ -666,7 +1330,7 @@ h=`
 
 <label>Thickness in</label>
 
-<input id="thick" type="number" value="4" oninput="calc()">
+<input id="thick" type="number" step="0.25" value="4" oninput="calc()">
 
 </div>
 
@@ -674,7 +1338,7 @@ h=`
 
 <label>Waste %</label>
 
-<input id="waste" type="number" value="10" oninput="calc()">
+<input id="waste" type="number" step="0.5" value="10" oninput="calc()">
 
 </div>
 
@@ -682,7 +1346,7 @@ h=`
 
 <label>Concrete $ / cubic yard</label>
 
-<input id="yard" type="number" value="0" oninput="calc()">
+<input id="yard" type="number" step="0.01" value="0" oninput="calc()">
 
 </div>
 
@@ -690,7 +1354,7 @@ h=`
 
 <label>Labor $</label>
 
-<input id="clabor" type="number" value="0" oninput="calc()">
+<input id="clabor" type="number" step="0.01" value="0" oninput="calc()">
 
 </div>
 
@@ -698,7 +1362,7 @@ h=`
 
 <label>Rebar / forms $</label>
 
-<input id="reinforce" type="number" value="0" oninput="calc()">
+<input id="reinforce" type="number" step="0.01" value="0" oninput="calc()">
 
 </div>
 
@@ -706,11 +1370,13 @@ h=`
 
 <label>Base / excavation / delivery $</label>
 
-<input id="site" type="number" value="0" oninput="calc()">
+<input id="site" type="number" step="0.01" value="0" oninput="calc()">
 
 </div>
 
 </div>
+
+<div id="concreteResult"></div>
 
 `;
 
@@ -720,7 +1386,11 @@ else{
 
 h=`
 
-<h3>Project Costs</h3>
+<h3>
+
+Project Costs
+
+</h3>
 
 <div class="fields">
 
@@ -774,6 +1444,208 @@ $('dynamic').innerHTML=h;
 
 }
 
+/* CONCRETE CALCULATOR */
+
+function concreteCalc(){
+
+if(trade!=='concrete'){
+
+return{
+
+exact:0,
+
+waste:0,
+
+order:0
+
+};
+
+}
+
+let length=num('len');
+
+let width=num('wid');
+
+let thickness=num('thick');
+
+let waste=num('waste');
+
+if(length<=0||width<=0||thickness<=0){
+
+return{
+
+exact:0,
+
+waste:0,
+
+order:0
+
+};
+
+}
+
+let cubicFeet=
+
+length*
+
+width*
+
+(thickness/12);
+
+let exact=
+
+cubicFeet/27;
+
+let withWaste=
+
+exact*
+
+(1+waste/100);
+
+/* Round UP to nearest 0.25 yd³ */
+
+let order=
+
+Math.ceil(withWaste*4)/4;
+
+return{
+
+exact,
+
+waste:withWaste,
+
+order
+
+};
+
+}
+
+function renderConcreteResult(){
+
+if(trade!=='concrete')return;
+
+let c=concreteCalc();
+
+let el=$('concreteResult');
+
+if(!el)return;
+
+if(c.exact<=0){
+
+el.innerHTML=`
+
+<div class="alert">
+
+📐 Enter length, width and thickness to calculate cubic yards.
+
+</div>
+
+`;
+
+return;
+
+}
+
+el.innerHTML=`
+
+<div class="concrete-result">
+
+<div class="concrete-result-title">
+
+Concrete Quantity Calculator
+
+</div>
+
+<div class="yard-big">
+
+${c.order.toFixed(2)} yd³
+
+</div>
+
+<div class="yard-label">
+
+Recommended quantity to order
+
+</div>
+
+<div class="yard-grid">
+
+<div class="yard-box">
+
+<span class="small">
+
+Exact volume
+
+</span>
+
+<strong>
+
+${c.exact.toFixed(2)} yd³
+
+</strong>
+
+</div>
+
+<div class="yard-box">
+
+<span class="small">
+
+With waste
+
+</span>
+
+<strong>
+
+${c.waste.toFixed(2)} yd³
+
+</strong>
+
+</div>
+
+<div class="yard-box">
+
+<span class="small">
+
+Thickness
+
+</span>
+
+<strong>
+
+${num('thick').toFixed(2)} in
+
+</strong>
+
+</div>
+
+</div>
+
+<div class="order-box">
+
+<span class="small">
+
+Recommended order
+
+</span>
+
+<br>
+
+<strong>
+
+${c.order.toFixed(2)} cubic yards
+
+</strong>
+
+</div>
+
+</div>
+
+`;
+
+}
+
+/* CUSTOM ITEMS */
+
 function addItem(){
 
 items.push({
@@ -808,7 +1680,9 @@ placeholder="Item"
 
 value="${x.name}"
 
-oninput="items[${i}].name=this.value">
+oninput="items[${i}].name=this.value"
+
+>
 
 <input
 
@@ -818,7 +1692,9 @@ placeholder="Cost $"
 
 value="${x.amount}"
 
-oninput="items[${i}].amount=Number(this.value)||0;calc()">
+oninput="items[${i}].amount=Number(this.value)||0;calc()"
+
+>
 
 </div>
 
@@ -831,6 +1707,8 @@ oninput="items[${i}].amount=Number(this.value)||0;calc()">
 '<div class="empty">No custom items.</div>';
 
 }
+
+/* DIRECT COST */
 
 function direct(){
 
@@ -868,21 +1746,11 @@ num('disposal');
 
 else if(trade==='concrete'){
 
-let yd=
-
-num('len')*
-
-num('wid')*
-
-(num('thick')/12)/
-
-27*
-
-(1+num('waste')/100);
+let c=concreteCalc();
 
 b=
 
-yd*num('yard')+
+c.order*num('yard')+
 
 num('clabor')+
 
@@ -920,6 +1788,8 @@ items.reduce(
 
 }
 
+/* QUOTE */
+
 function quote(){
 
 let b=direct();
@@ -948,21 +1818,15 @@ num('discount');
 
 return{
 
-b,
-
-o,
-
-p,
-
-t,
-
-d,
+b,o,p,t,d,
 
 total:Math.max(0,s+t-d)
 
 };
 
 }
+
+/* CALCULATE */
 
 function calc(){
 
@@ -982,17 +1846,29 @@ q.total*
 
 ):0;
 
-$('base').textContent=money(q.b);
+$('base').textContent=
 
-$('oh').textContent=money(q.o);
+money(q.b);
 
-$('profitOut').textContent=money(q.p);
+$('oh').textContent=
 
-$('taxOut').textContent=money(q.t);
+money(q.o);
 
-$('discountOut').textContent='-'+money(q.d);
+$('profitOut').textContent=
 
-$('total').textContent=money(q.total);
+money(q.p);
+
+$('taxOut').textContent=
+
+money(q.t);
+
+$('discountOut').textContent=
+
+'-'+money(q.d);
+
+$('total').textContent=
+
+money(q.total);
 
 $('margin').textContent=
 
@@ -1020,6 +1896,12 @@ $('best').textContent=
 
 money(q.total*1.15);
 
+if(trade==='concrete'){
+
+renderConcreteResult();
+
+}
+
 $('health').innerHTML=`
 
 <div class="alert">
@@ -1038,6 +1920,8 @@ preview();
 
 }
 
+/* CUSTOMER PREVIEW */
+
 function preview(){
 
 if(!$('previewBox'))return;
@@ -1046,7 +1930,35 @@ let q=quote();
 
 let t=
 
-trades.find(x=>x[0]===trade);
+trades.find(
+
+x=>x[0]===trade
+
+);
+
+let concreteInfo='';
+
+if(trade==='concrete'){
+
+let c=concreteCalc();
+
+if(c.order>0){
+
+concreteInfo=`
+
+<p>
+
+<b>Concrete quantity:</b>
+
+${c.order.toFixed(2)} yd³
+
+</p>
+
+`;
+
+}
+
+}
 
 $('previewBox').innerHTML=`
 
@@ -1086,7 +1998,13 @@ ${lang==='en'?t[2]:t[3]}
 
 </p>
 
-<h1>${money(q.total)}</h1>
+${concreteInfo}
+
+<h1>
+
+${money(q.total)}
+
+</h1>
 
 <p>
 
@@ -1105,6 +2023,8 @@ Thank you for the opportunity.
 `;
 
 }
+
+/* SAVE */
 
 function saveQuote(){
 
@@ -1128,6 +2048,16 @@ trade,
 
 data:quote(),
 
+concrete:
+
+trade==='concrete'
+
+?
+
+concreteCalc()
+
+:null,
+
 date:new Date().toLocaleString()
 
 });
@@ -1146,9 +2076,13 @@ alert(
 
 lang==='en'
 
-?'Quote saved on this device.'
+?
 
-:'Cotización guardada en este dispositivo.'
+'Quote saved on this device.'
+
+:
+
+'Cotización guardada en este dispositivo.'
 
 );
 
@@ -1188,7 +2122,9 @@ ${q.date} · ${money(q.data.total)}
 
 class="btn"
 
-onclick="loadSaved(${i})">
+onclick="loadSaved(${i})"
+
+>
 
 Load
 
@@ -1204,6 +2140,8 @@ Load
 
 }
 
+/* LOAD */
+
 function loadSaved(i){
 
 let a=
@@ -1218,11 +2156,17 @@ let q=a[i];
 
 if(!q)return;
 
-$('client').value=q.client||'';
+$('client').value=
 
-$('company').value=q.company||'';
+q.client||'';
 
-$('address').value=q.address||'';
+$('company').value=
+
+q.company||'';
+
+$('address').value=
+
+q.address||'';
 
 trade=q.trade;
 
@@ -1235,6 +2179,8 @@ showTab('estimate');
 calc();
 
 }
+
+/* TABS */
 
 function showTab(x){
 
@@ -1262,6 +2208,8 @@ renderSaved();
 
 }
 
+/* CLEAR */
+
 function clearAll(){
 
 if(
@@ -1270,9 +2218,13 @@ confirm(
 
 lang==='en'
 
-?'Clear estimate?'
+?
 
-:'¿Limpiar cotización?'
+'Clear estimate?'
+
+:
+
+'¿Limpiar cotización?'
 
 )
 
@@ -1303,6 +2255,8 @@ calc();
 }
 
 }
+
+/* SMART SCOPE */
 
 function smart(){
 
@@ -1388,6 +2342,8 @@ renderDynamic();
 
 }
 
+/* CHANGE ORDERS */
+
 function addChange(){
 
 let d=
@@ -1404,7 +2360,11 @@ $('changes').innerHTML+=`
 
 <div class="item">
 
-<b>${d}</b>
+<b>
+
+${d}
+
+</b>
 
 <div class="small">
 
@@ -1421,6 +2381,8 @@ $('changeText').value='';
 $('changeAmount').value=0;
 
 }
+
+/* DAILY LOG */
 
 function addLog(){
 
@@ -1459,6 +2421,8 @@ $('logs').innerHTML;
 $('logText').value='';
 
 }
+
+/* START */
 
 renderTrades();
 
