@@ -1,600 +1,114 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
 
 <head>
 
-<meta charset="utf-8">
+<meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1.0">
 
-<title>QuoteFlow Construction</title>
+<title>QuoteFlow Construction Beta</title>
 
 <style>
 
-:root{
-
---bg:#090a0c;
-
---card:#15171b;
-
---line:#2b3038;
-
---text:#f7f8fa;
-
---muted:#9da4ae;
-
---accent:#ff7a00;
-
---good:#39d98a
-
-}
+:root{--bg:#0b0f14;--card:#121821;--card2:#18212c;--text:#f4f7fa;--muted:#9aa7b5;--accent:#f59e0b;--border:#293544;--good:#22c55e;--danger:#ef4444}
 
 *{box-sizing:border-box}
 
-body{
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif}
 
-margin:0;
+header{padding:18px;border-bottom:1px solid var(--border);background:#0d131b;position:sticky;top:0;z-index:10}
 
-background:var(--bg);
+.header{max-width:1200px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:12px}
 
-color:var(--text);
+.logo{font-size:22px;font-weight:800}.logo span{color:var(--accent)}
 
-font-family:system-ui,-apple-system,Segoe UI,sans-serif
+button{border:0;border-radius:10px;padding:11px 15px;background:var(--accent);font-weight:700;cursor:pointer}
 
-}
+button.secondary{background:var(--card2);color:var(--text);border:1px solid var(--border)}
 
-.app{
+button.danger{background:var(--danger);color:white}
 
-max-width:1100px;
+.container{max-width:1200px;margin:auto;padding:20px}
 
-margin:auto;
+.tabs{display:flex;gap:8px;overflow:auto;margin-bottom:18px}
 
-padding:16px
+.tab{white-space:nowrap}
 
-}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
 
-.top{
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;margin-bottom:16px}
 
-display:flex;
+.card h2{margin-top:0;font-size:18px}
 
-justify-content:space-between;
+label{display:block;font-size:13px;color:var(--muted);margin-bottom:6px}
 
-align-items:center;
+input,select,textarea{width:100%;padding:12px;border-radius:9px;border:1px solid var(--border);background:#0c1219;color:var(--text);outline:none}
 
-margin-bottom:14px
+textarea{min-height:90px;resize:vertical}
 
-}
+.field{margin-bottom:13px}
 
-.logo{
+.trade-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}
 
-font-size:27px;
+.trade{background:var(--card2);color:var(--text);border:1px solid var(--border)}
 
-font-weight:900
+.trade.active{border-color:var(--accent);background:#21190c}
 
-}
+.row{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
 
-.logo b{
+.summary{display:grid;gap:10px}
 
-color:var(--accent)
+.summary-line{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border)}
 
-}
+.total{font-size:25px;font-weight:800;color:var(--accent)}
 
-.sub{
+.badge{display:inline-block;padding:5px 9px;border-radius:20px;background:#16251b;color:var(--good);font-size:12px}
 
-font-size:10px;
+.hidden{display:none!important}
 
-color:var(--muted)
+.quote-preview{background:white;color:#111;border-radius:12px;padding:30px}
 
-}
+.quote-head{display:flex;justify-content:space-between;border-bottom:2px solid #222;padding-bottom:18px;margin-bottom:20px}
 
-button,input,select,textarea{
+.quote-title{font-size:28px;font-weight:800}
 
-font:inherit
+.quote-section{margin:20px 0}
 
-}
+.quote-table{width:100%;border-collapse:collapse}
 
-button{
+.quote-table td,.quote-table th{padding:10px;border-bottom:1px solid #ddd;text-align:left}
 
-cursor:pointer
+.quote-total{text-align:right;font-size:24px;font-weight:bold;margin-top:20px}
 
-}
+.signatures{display:grid;grid-template-columns:1fr 1fr;gap:50px;margin-top:50px}
 
-.btn,.chip,.tab{
-
-background:#1c1f24;
-
-color:#fff;
-
-border:1px solid var(--line);
-
-border-radius:11px;
-
-padding:10px 13px;
-
-font-weight:800
-
-}
-
-button.primary,.chip.on,.tab.on{
-
-background:var(--accent);
-
-border-color:var(--accent)
-
-}
-
-input,select,textarea{
-
-width:100%;
-
-background:#0d0f12;
-
-color:#fff;
-
-border:1px solid var(--line);
-
-border-radius:10px;
-
-padding:11px
-
-}
-
-textarea{
-
-min-height:90px
-
-}
-
-.hero,.card{
-
-background:var(--card);
-
-border:1px solid var(--line);
-
-border-radius:18px;
-
-padding:17px;
-
-margin-bottom:14px
-
-}
-
-.hero h1{
-
-margin:0 0 5px
-
-}
-
-.hero p,.small,.empty{
-
-color:var(--muted);
-
-font-size:12px
-
-}
-
-.tabs{
-
-display:flex;
-
-gap:8px;
-
-overflow:auto;
-
-margin-bottom:14px
-
-}
-
-.tab{
-
-white-space:nowrap
-
-}
-
-.grid{
-
-display:grid;
-
-grid-template-columns:1.5fr .85fr;
-
-gap:14px
-
-}
-
-.fields{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:10px
-
-}
-
-.full{
-
-grid-column:1/-1
-
-}
-
-.field label{
-
-display:block;
-
-color:var(--muted);
-
-font-size:11px;
-
-font-weight:800;
-
-margin:0 0 5px
-
-}
-
-h2{
-
-font-size:17px
-
-}
-
-h3{
-
-font-size:12px;
-
-text-transform:uppercase;
-
-color:#d8dde5;
-
-margin:20px 0 9px
-
-}
-
-.tradegrid{
-
-display:grid;
-
-grid-template-columns:repeat(4,1fr);
-
-gap:8px
-
-}
-
-.summary{
-
-position:sticky;
-
-top:10px
-
-}
-
-.row{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:9px 0;
-
-border-bottom:1px solid #272b32;
-
-font-size:13px
-
-}
-
-.total{
-
-font-size:38px;
-
-font-weight:950;
-
-color:var(--accent);
-
-margin:5px 0 15px
-
-}
-
-.bar{
-
-height:7px;
-
-background:#252a31;
-
-border-radius:9px;
-
-overflow:hidden
-
-}
-
-.bar i{
-
-display:block;
-
-height:100%;
-
-background:var(--good);
-
-width:0
-
-}
-
-.actions{
-
-display:flex;
-
-gap:8px;
-
-flex-wrap:wrap;
-
-margin-top:12px
-
-}
-
-.tiers{
-
-display:grid;
-
-grid-template-columns:repeat(3,1fr);
-
-gap:8px
-
-}
-
-.tier{
-
-background:#101216;
-
-border:1px solid var(--line);
-
-border-radius:12px;
-
-padding:11px
-
-}
-
-.price{
-
-font-size:20px;
-
-font-weight:900;
-
-color:var(--accent)
-
-}
-
-.preview{
-
-background:#fff;
-
-color:#17181b;
-
-border-radius:14px;
-
-padding:20px
-
-}
-
-.hidden{
-
-display:none!important
-
-}
-
-.item,.log{
-
-border:1px solid var(--line);
-
-border-radius:11px;
-
-padding:10px;
-
-margin-top:8px;
-
-background:#101216
-
-}
-
-.alert{
-
-padding:10px;
-
-border-radius:10px;
-
-background:#211b10;
-
-border:1px solid #51401f;
-
-color:#ffe1a3;
-
-margin-top:10px
-
-}
-
-.concrete-result{
-
-margin-top:14px;
-
-padding:15px;
-
-border:1px solid #31516c;
-
-background:#0e1720;
-
-border-radius:14px
-
-}
-
-.concrete-result-title{
-
-color:#9ecfff;
-
-font-size:11px;
-
-font-weight:900;
-
-text-transform:uppercase;
-
-margin-bottom:8px
-
-}
-
-.yard-big{
-
-font-size:34px;
-
-font-weight:950;
-
-color:var(--accent);
-
-line-height:1
-
-}
-
-.yard-label{
-
-color:var(--muted);
-
-font-size:11px;
-
-margin-top:4px
-
-}
-
-.yard-grid{
-
-display:grid;
-
-grid-template-columns:1fr 1fr 1fr;
-
-gap:8px;
-
-margin-top:12px
-
-}
-
-.yard-box{
-
-background:#101216;
-
-border:1px solid var(--line);
-
-border-radius:10px;
-
-padding:10px
-
-}
-
-.yard-box strong{
-
-display:block;
-
-font-size:18px;
-
-margin-top:3px
-
-}
-
-.order-box{
-
-margin-top:10px;
-
-padding:12px;
-
-border-radius:11px;
-
-background:#17231d;
-
-border:1px solid #315d45
-
-}
-
-.order-box strong{
-
-color:var(--good);
-
-font-size:22px
-
-}
+.signature{border-top:1px solid #555;padding-top:8px}
 
 @media(max-width:800px){
 
-.grid{
+.grid{grid-template-columns:1fr}
 
-grid-template-columns:1fr
+.trade-grid{grid-template-columns:repeat(2,1fr)}
 
-}
+.row{grid-template-columns:1fr}
 
-.summary{
-
-position:static
-
-}
-
-}
-
-@media(max-width:550px){
-
-.fields{
-
-grid-template-columns:1fr
-
-}
-
-.tradegrid{
-
-grid-template-columns:repeat(2,1fr)
-
-}
-
-.tiers{
-
-grid-template-columns:1fr
-
-}
-
-.yard-grid{
-
-grid-template-columns:1fr
-
-}
+.header{align-items:flex-start}
 
 }
 
 @media print{
 
-.no-print,.hero,.tabs{
+body{background:white}
 
-display:none!important
+header,.tabs,.no-print{display:none!important}
 
-}
+.container{padding:0}
 
-body{
+.card:not(.print-card){display:none!important}
 
-background:#fff;
-
-color:#111
-
-}
-
-.card{
-
-border:0;
-
-background:#fff
-
-}
-
-.grid{
-
-display:block
-
-}
-
-.summary{
-
-margin-top:15px
-
-}
+#proQuote{display:block!important}
 
 }
 
@@ -604,87 +118,79 @@ margin-top:15px
 
 <body>
 
-<div class="app">
+<header>
 
-<header class="top">
+<div class="header">
 
-<div class="logo">
+<div class="logo">Quote<span>Flow</span> Construction</div>
 
-Quote<b>Flow</b>
-
-<span class="sub">CONSTRUCTION BETA</span>
-
-</div>
-
-<div>
-
-<button class="btn primary" id="en" onclick="setLang('en')">EN</button>
-
-<button class="btn" id="es" onclick="setLang('es')">ES</button>
+<button class="secondary" onclick="toggleLang()" id="langBtn">ES</button>
 
 </div>
 
 </header>
 
-<section class="hero">
+<div class="container">
 
-<h1 id="hero">
+<div class="tabs no-print">
 
-Estimate faster. Protect your profit.
+<button class="tab" onclick="showTab('estimate')">Estimate</button>
 
-</h1>
+<button class="tab secondary" onclick="showTab('preview')">Customer Preview</button>
 
-<p id="heroSub">
+<button class="tab secondary" onclick="showTab('tools')">Job Tools</button>
 
-One simple quoting workspace for construction contractors.
+<button class="tab secondary" onclick="showTab('saved')">Saved Quotes</button>
 
-</p>
+</div>
 
-</section>
+<section id="estimate">
 
-<nav class="tabs no-print">
+<div class="card">
 
-<button class="tab on" onclick="showTab('estimate')">
+<h2>Construction Trade</h2>
 
-Estimate
+<div class="trade-grid">
 
-</button>
+<button class="trade active" onclick="setTrade('Roofing',this)">Roofing</button>
 
-<button class="tab" onclick="showTab('preview')">
+<button class="trade" onclick="setTrade('Concrete',this)">Concrete</button>
 
-Customer Preview
+<button class="trade" onclick="setTrade('Siding',this)">Siding</button>
 
-</button>
+<button class="trade" onclick="setTrade('Gutters',this)">Gutters</button>
 
-<button class="tab" onclick="showTab('tools')">
+<button class="trade" onclick="setTrade('Painting',this)">Painting</button>
 
-Job Tools
+<button class="trade" onclick="setTrade('Drywall',this)">Drywall</button>
 
-</button>
+<button class="trade" onclick="setTrade('Flooring',this)">Flooring</button>
 
-<button class="tab" onclick="showTab('saved')">
+<button class="trade" onclick="setTrade('Landscaping',this)">Landscaping</button>
 
-Saved Quotes
+<button class="trade" onclick="setTrade('Excavation',this)">Excavation</button>
 
-</button>
+<button class="trade" onclick="setTrade('Framing',this)">Framing</button>
 
-</nav>
+<button class="trade" onclick="setTrade('Remodeling',this)">Remodeling</button>
 
-<div id="estimate" class="grid">
+<button class="trade" onclick="setTrade('General Construction',this)">General</button>
 
-<main class="card">
+</div>
 
-<h2>
+</div>
 
-Project & Customer
+<div class="grid">
 
-</h2>
+<div>
 
-<div class="fields">
+<div class="card">
+
+<h2>Customer & Project</h2>
 
 <div class="field">
 
-<label>Client</label>
+<label>Customer Name</label>
 
 <input id="client" placeholder="Customer name">
 
@@ -692,377 +198,327 @@ Project & Customer
 
 <div class="field">
 
-<label>Your company</label>
+<label>Project Address</label>
 
-<input id="company" placeholder="Company name">
-
-</div>
-
-<div class="field full">
-
-<label>Job address</label>
-
-<input id="address" placeholder="Street, city, state">
+<input id="address" placeholder="Project address">
 
 </div>
 
+<div class="field">
+
+<label>Company Name</label>
+
+<input id="company" placeholder="Your company">
+
 </div>
 
-<h3>
+<div class="field">
 
-Choose trade
+<label>Scope / Description</label>
 
-</h3>
+<textarea id="description" placeholder="Describe the work..."></textarea>
 
-<div class="tradegrid" id="trades"></div>
+</div>
 
-<div id="dynamic"></div>
+</div>
 
-<h3>
+<div class="card">
 
-Pricing
+<h2 id="tradeTitle">Roofing Estimate</h2>
 
-</h3>
+<div id="dynamicForm"></div>
 
-<div class="fields">
+</div>
+
+<div class="card">
+
+<h2>Custom Line Item</h2>
+
+<div class="row">
+
+<div class="field">
+
+<label>Description</label>
+
+<input id="customDesc" placeholder="Material or labor">
+
+</div>
+
+<div class="field">
+
+<label>Amount</label>
+
+<input id="customAmount" type="number" step="0.01" value="0">
+
+</div>
+
+</div>
+
+<button onclick="addCustom()">Add Item</button>
+
+<div id="customList"></div>
+
+</div>
+
+</div>
+
+<div>
+
+<div class="card">
+
+<h2>Pricing</h2>
+
+<div class="row">
 
 <div class="field">
 
 <label>Overhead %</label>
 
-<input id="over" type="number" value="10" oninput="calc()">
+<input id="overhead" type="number" value="10" oninput="update()">
 
 </div>
 
 <div class="field">
 
-<label>Profit / markup %</label>
+<label>Profit / Markup %</label>
 
-<input id="profit" type="number" value="20" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Sales tax %</label>
-
-<input id="tax" type="number" value="0" oninput="calc()">
+<input id="profit" type="number" value="20" oninput="update()">
 
 </div>
 
 <div class="field">
 
-<label>Discount $</label>
+<label>Tax %</label>
 
-<input id="discount" type="number" value="0" oninput="calc()">
+<input id="tax" type="number" value="0" oninput="update()">
+
+</div>
+
+<div class="field">
+
+<label>Discount %</label>
+
+<input id="discount" type="number" value="0" oninput="update()">
 
 </div>
 
 </div>
 
-<h3>
+</div>
 
-Custom line items
+<div class="card">
 
-</h3>
+<h2>Estimate Summary</h2>
 
-<div id="items"></div>
+<div class="summary">
 
-<div class="actions no-print">
+<div class="summary-line"><span>Base Cost</span><strong id="base">$0.00</strong></div>
 
-<button class="btn" onclick="addItem()">
+<div class="summary-line"><span>Overhead</span><strong id="oh">$0.00</strong></div>
 
-+ Add item
+<div class="summary-line"><span>Profit</span><strong id="pr">$0.00</strong></div>
 
-</button>
+<div class="summary-line"><span>Tax</span><strong id="tx">$0.00</strong></div>
 
-<button class="btn primary" onclick="saveQuote()">
+<div class="summary-line"><span>Discount</span><strong id="dc">$0.00</strong></div>
 
-Save quote
+<div class="summary-line total"><span>Customer Price</span><strong id="total">$0.00</strong></div>
 
-</button>
+<div class="summary-line"><span>Gross Margin</span><strong id="margin">0%</strong></div>
 
 </div>
 
-<div id="health"></div>
+<br>
 
-</main>
+<button onclick="goodBetterBest()">Good / Better / Best</button>
 
-<aside class="card summary">
+<button class="secondary" onclick="printQuote()">Print / Save PDF</button>
 
-<h2>
-
-Quote Summary
-
-</h2>
-
-<div class="row">
-
-<span>Estimated cost</span>
-
-<strong id="base">$0.00</strong>
+<button class="secondary" onclick="openProfessionalQuote()">Professional Quote</button>
 
 </div>
 
-<div class="row">
+<div class="card">
 
-<span>Overhead</span>
+<h2>Smart Scope Assistant</h2>
 
-<strong id="oh">$0.00</strong>
+<textarea id="smartText" placeholder="Example: Replace roof 2,000 sq ft with shingles and gutters"></textarea>
 
-</div>
+<br><br>
 
-<div class="row">
+<button onclick="smart()">Analyze Scope</button>
 
-<span>Profit</span>
-
-<strong id="profitOut">$0.00</strong>
-
-</div>
-
-<div class="row">
-
-<span>Tax</span>
-
-<strong id="taxOut">$0.00</strong>
-
-</div>
-
-<div class="row">
-
-<span>Discount</span>
-
-<strong id="discountOut">-$0.00</strong>
-
-</div>
-
-<p class="small">
-
-Recommended customer price
-
-</p>
-
-<div class="total" id="total">
-
-$0.00
-
-</div>
-
-<p class="small">
-
-Projected gross margin
-
-<b id="margin">0%</b>
-
-</p>
-
-<div class="bar">
-
-<i id="bar"></i>
-
-</div>
-
-<h3>
-
-Good / Better / Best
-
-</h3>
-
-<div class="tiers">
-
-<div class="tier">
-
-<b>Good</b>
-
-<div class="price" id="good">$0</div>
-
-</div>
-
-<div class="tier">
-
-<b>Better</b>
-
-<div class="price" id="better">$0</div>
-
-</div>
-
-<div class="tier">
-
-<b>Best</b>
-
-<div class="price" id="best">$0</div>
+<p id="smartResult" class="badge">Ready</p>
 
 </div>
 
 </div>
 
-<div class="actions no-print">
-
-<button class="btn primary" onclick="showTab('preview')">
-
-Customer Preview
-
-</button>
-
-<button class="btn" onclick="window.print()">
-
-Print / PDF
-
-</button>
-
-<button class="btn" onclick="clearAll()">
-
-Clear
-
-</button>
-
 </div>
-
-<p class="small">
-
-Verify quantities, supplier prices, labor, permits, taxes and site conditions before sending.
-
-</p>
-
-</aside>
-
-</div>
-
-<section id="preview" class="card hidden">
-
-<div class="actions no-print">
-
-<button class="btn" onclick="showTab('estimate')">
-
-← Back
-
-</button>
-
-<button class="btn primary" onclick="window.print()">
-
-Print
-
-</button>
-
-</div>
-
-<div class="preview" id="previewBox"></div>
 
 </section>
 
-<section id="tools" class="grid hidden">
+<section id="preview" class="hidden">
 
-<main class="card">
+<div class="card">
 
-<h2>
+<h2>Customer Preview</h2>
 
-Smart Scope Assistant
-
-</h2>
-
-<p class="small">
-
-Describe the job and QuoteFlow suggests the trade.
-
-</p>
-
-<textarea
-
-id="description"
-
-oninput="smart()"
-
-placeholder="Example: Replace 28 squares of asphalt roof, tear-off one layer..."
-
-></textarea>
-
-<div id="smartResult"></div>
-
-<h2>
-
-Change Orders
-
-</h2>
-
-<div class="fields">
-
-<input id="changeText" placeholder="Change description">
-
-<input
-
-id="changeAmount"
-
-type="number"
-
-placeholder="Added price $"
-
->
+<div class="quote-preview" id="customerPreview"></div>
 
 </div>
 
-<button
+</section>
 
-class="btn primary"
+<section id="tools" class="hidden">
 
-style="margin-top:10px"
+<div class="card">
 
-onclick="addChange()"
+<h2>Change Orders</h2>
 
->
+<div class="row">
 
-Add change order
+<input id="coDesc" placeholder="Change order description">
 
-</button>
+<input id="coAmount" type="number" placeholder="Amount">
 
-<div id="changes"></div>
+</div>
 
-</main>
+<br>
 
-<aside class="card">
+<button onclick="addCO()">Add Change Order</button>
 
-<h2>
+<div id="coList"></div>
 
-Daily Job Log
+</div>
 
-</h2>
+<div class="card">
 
-<textarea
+<h2>Daily Job Log</h2>
 
-id="logText"
+<textarea id="logText" placeholder="Today's work, materials, issues..."></textarea>
 
-placeholder="Crew, weather, progress, materials, issues..."
+<br><br>
 
-></textarea>
-
-<button
-
-class="btn primary"
-
-style="margin-top:10px"
-
-onclick="addLog()"
-
->
-
-Add daily log
-
-</button>
+<button onclick="addLog()">Save Log</button>
 
 <div id="logs"></div>
 
-</aside>
+</div>
 
 </section>
 
-<section id="saved" class="card hidden">
+<section id="saved" class="hidden">
 
-<h2>
+<div class="card">
 
-Saved Quotes
-
-</h2>
+<h2>Saved Quotes</h2>
 
 <div id="savedList"></div>
+
+</div>
+
+</section>
+
+<section id="proQuote" class="hidden">
+
+<div class="card no-print">
+
+<h2>Professional Quote</h2>
+
+<div class="row">
+
+<div class="field">
+
+<label>Company Name</label>
+
+<input id="qCompany">
+
+</div>
+
+<div class="field">
+
+<label>Quote Number</label>
+
+<input id="qNumber">
+
+</div>
+
+<div class="field">
+
+<label>Customer</label>
+
+<input id="qClient">
+
+</div>
+
+<div class="field">
+
+<label>Project Address</label>
+
+<input id="qAddress">
+
+</div>
+
+<div class="field">
+
+<label>Valid Until</label>
+
+<input id="qValid" type="date">
+
+</div>
+
+<div class="field">
+
+<label>Payment Terms</label>
+
+<input id="qTerms" value="50% deposit, balance upon completion">
+
+</div>
+
+</div>
+
+<div class="field">
+
+<label>Description / Scope</label>
+
+<textarea id="qDescription"></textarea>
+
+</div>
+
+<div class="field">
+
+<label>Warranty</label>
+
+<textarea id="qWarranty">Workmanship warranty subject to written agreement and manufacturer requirements.</textarea>
+
+</div>
+
+<div class="field">
+
+<label>Notes / Exclusions</label>
+
+<textarea id="qNotes" placeholder="Permits, hidden damage, additional work, exclusions..."></textarea>
+
+</div>
+
+<button onclick="generateQuote()">Generate Quote</button>
+
+<button onclick="window.print()" class="secondary">Print / Save PDF</button>
+
+<button onclick="saveProfessionalQuote()" class="secondary">Save Quote</button>
+
+</div>
+
+<div class="card print-card">
+
+<div class="quote-preview" id="professionalPreview">
+
+<p>Generate your professional quote.</p>
+
+</div>
+
+</div>
 
 </section>
 
@@ -1070,1372 +526,758 @@ Saved Quotes
 
 <script>
 
-const trades=[
-
-['roof','🏠','Roofing','Techos'],
-
-['concrete','🧱','Concrete','Concreto'],
-
-['siding','🏡','Siding','Revestimiento'],
-
-['gutters','🌧️','Gutters','Canaletas'],
-
-['painting','🎨','Painting','Pintura'],
-
-['drywall','🧰','Drywall','Drywall'],
-
-['flooring','🪵','Flooring','Pisos'],
-
-['landscaping','🌳','Landscaping','Paisajismo'],
-
-['excavation','🚜','Excavation','Excavación'],
-
-['framing','🔨','Framing','Estructura'],
-
-['remodel','🛠️','Remodeling','Remodelación'],
-
-['general','📋','General Construction','Construcción General']
-
-];
-
 let lang='en';
 
-let trade='roof';
+let trade='Roofing';
 
-let items=[];
+let customItems=[];
 
-let changes=[];
+let changeOrders=[];
 
 let logs=[];
 
-const $=x=>document.getElementById(x);
+const tradeData={
 
-const money=n=>
+Roofing:[
 
-new Intl.NumberFormat('en-US',{
+['Roof Area (sq ft)','roofArea',0],
 
-style:'currency',
+['Material Cost / sq ft','roofMat',0],
 
-currency:'USD'
+['Labor Cost / sq ft','roofLabor',0]
 
-}).format(Number(n)||0);
+],
 
-const num=x=>
+Concrete:[
 
-Number($(x)?.value)||0;
+['Length (ft)','length',0],
 
-/* LANGUAGE */
+['Width (ft)','width',0],
 
-function setLang(x){
+['Thickness (in)','thickness',4],
 
-lang=x;
+['Waste %','waste',10],
 
-$('en').classList.toggle(
+['Concrete Price / yd³','concretePrice',180],
 
-'primary',
+['Labor','concreteLabor',0]
 
-x==='en'
+],
 
-);
+Siding:[
 
-$('es').classList.toggle(
+['Area (sq ft)','area',0],
 
-'primary',
+['Material / sq ft','mat',0],
 
-x==='es'
+['Labor / sq ft','labor',0]
 
-);
+],
 
-$('hero').textContent=
+Gutters:[
 
-x==='en'
+['Linear Feet','lf',0],
 
-?
+['Material / ft','mat',0],
 
-'Estimate faster. Protect your profit.'
+['Labor / ft','labor',0]
 
-:
+],
 
-'Cotiza más rápido. Protege tu ganancia.';
+Painting:[
 
-$('heroSub').textContent=
+['Area (sq ft)','area',0],
 
-x==='en'
+['Material / sq ft','mat',0],
 
-?
+['Labor / sq ft','labor',0]
 
-'One simple quoting workspace for construction contractors.'
+],
 
-:
+Drywall:[
 
-'Un espacio sencillo para cotizar trabajos de construcción.';
+['Area (sq ft)','area',0],
 
-renderTrades();
+['Material / sq ft','mat',0],
 
-renderDynamic();
+['Labor / sq ft','labor',0]
 
-renderItems();
+],
 
-calc();
+Flooring:[
 
-}
+['Area (sq ft)','area',0],
 
-/* TRADES */
+['Material / sq ft','mat',0],
 
-function renderTrades(){
+['Labor / sq ft','labor',0]
 
-$('trades').innerHTML=
+],
 
-trades.map(t=>`
+Landscaping:[
 
-<button
+['Area / quantity','area',0],
 
-class="chip ${trade===t[0]?'on':''}"
+['Material cost','mat',0],
 
-onclick="setTrade('${t[0]}')"
+['Labor cost','labor',0]
 
->
+],
 
-${t[1]}
+Excavation:[
 
-${lang==='en'?t[2]:t[3]}
+['Cubic yards','qty',0],
 
-</button>
+['Price / yd³','price',0],
 
-`).join('');
+['Labor / Equipment','labor',0]
 
-}
+],
 
-function setTrade(x){
+Framing:[
 
-trade=x;
+['Area (sq ft)','area',0],
 
-renderTrades();
+['Material / sq ft','mat',0],
 
-renderDynamic();
+['Labor / sq ft','labor',0]
 
-calc();
+],
 
-}
+Remodeling:[
 
-/* DYNAMIC FORMS */
+['Estimated Materials','mat',0],
 
-function renderDynamic(){
+['Estimated Labor','labor',0]
 
-let h='';
+],
 
-if(trade==='roof'){
+'General Construction':[
 
-h=`
+['Materials','mat',0],
 
-<h3>
+['Labor','labor',0]
 
-Roof Measurements
-
-</h3>
-
-<div class="fields">
-
-<div class="field">
-
-<label>Roof area sq ft</label>
-
-<input id="area" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Waste %</label>
-
-<input id="waste" type="number" value="10" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Material $ / square</label>
-
-<input id="mat" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Tear-off $ / square</label>
-
-<input id="tear" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Install labor $ / square</label>
-
-<input id="install" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Accessories $</label>
-
-<input id="extra" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Disposal $</label>
-
-<input id="disposal" type="number" value="0" oninput="calc()">
-
-</div>
-
-</div>
-
-`;
-
-}
-
-else if(trade==='concrete'){
-
-h=`
-
-<h3>
-
-Concrete Measurements
-
-</h3>
-
-<div class="fields">
-
-<div class="field">
-
-<label>Length ft</label>
-
-<input id="len" type="number" step="0.01" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Width ft</label>
-
-<input id="wid" type="number" step="0.01" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Thickness in</label>
-
-<input id="thick" type="number" step="0.25" value="4" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Waste %</label>
-
-<input id="waste" type="number" step="0.5" value="10" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Concrete $ / cubic yard</label>
-
-<input id="yard" type="number" step="0.01" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Labor $</label>
-
-<input id="clabor" type="number" step="0.01" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Rebar / forms $</label>
-
-<input id="reinforce" type="number" step="0.01" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Base / excavation / delivery $</label>
-
-<input id="site" type="number" step="0.01" value="0" oninput="calc()">
-
-</div>
-
-</div>
-
-<div id="concreteResult"></div>
-
-`;
-
-}
-
-else{
-
-h=`
-
-<h3>
-
-Project Costs
-
-</h3>
-
-<div class="fields">
-
-<div class="field">
-
-<label>Materials $</label>
-
-<input id="materials" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Labor $</label>
-
-<input id="labor" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Equipment $</label>
-
-<input id="equipment" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field">
-
-<label>Subcontractor $</label>
-
-<input id="subcontract" type="number" value="0" oninput="calc()">
-
-</div>
-
-<div class="field full">
-
-<label>Site / miscellaneous $</label>
-
-<input id="misc" type="number" value="0" oninput="calc()">
-
-</div>
-
-</div>
-
-`;
-
-}
-
-$('dynamic').innerHTML=h;
-
-}
-
-/* CONCRETE CALCULATOR */
-
-function concreteCalc(){
-
-if(trade!=='concrete'){
-
-return{
-
-exact:0,
-
-waste:0,
-
-order:0
+]
 
 };
 
-}
+function money(n){
 
-let length=num('len');
-
-let width=num('wid');
-
-let thickness=num('thick');
-
-let waste=num('waste');
-
-if(length<=0||width<=0||thickness<=0){
-
-return{
-
-exact:0,
-
-waste:0,
-
-order:0
-
-};
+return '$'+Number(n||0).toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});
 
 }
 
-let cubicFeet=
+function showTab(id){
 
-length*
+['estimate','preview','tools','saved','proQuote'].forEach(x=>{
 
-width*
-
-(thickness/12);
-
-let exact=
-
-cubicFeet/27;
-
-let withWaste=
-
-exact*
-
-(1+waste/100);
-
-/* Round UP to nearest 0.25 yd³ */
-
-let order=
-
-Math.ceil(withWaste*4)/4;
-
-return{
-
-exact,
-
-waste:withWaste,
-
-order
-
-};
-
-}
-
-function renderConcreteResult(){
-
-if(trade!=='concrete')return;
-
-let c=concreteCalc();
-
-let el=$('concreteResult');
-
-if(!el)return;
-
-if(c.exact<=0){
-
-el.innerHTML=`
-
-<div class="alert">
-
-📐 Enter length, width and thickness to calculate cubic yards.
-
-</div>
-
-`;
-
-return;
-
-}
-
-el.innerHTML=`
-
-<div class="concrete-result">
-
-<div class="concrete-result-title">
-
-Concrete Quantity Calculator
-
-</div>
-
-<div class="yard-big">
-
-${c.order.toFixed(2)} yd³
-
-</div>
-
-<div class="yard-label">
-
-Recommended quantity to order
-
-</div>
-
-<div class="yard-grid">
-
-<div class="yard-box">
-
-<span class="small">
-
-Exact volume
-
-</span>
-
-<strong>
-
-${c.exact.toFixed(2)} yd³
-
-</strong>
-
-</div>
-
-<div class="yard-box">
-
-<span class="small">
-
-With waste
-
-</span>
-
-<strong>
-
-${c.waste.toFixed(2)} yd³
-
-</strong>
-
-</div>
-
-<div class="yard-box">
-
-<span class="small">
-
-Thickness
-
-</span>
-
-<strong>
-
-${num('thick').toFixed(2)} in
-
-</strong>
-
-</div>
-
-</div>
-
-<div class="order-box">
-
-<span class="small">
-
-Recommended order
-
-</span>
-
-<br>
-
-<strong>
-
-${c.order.toFixed(2)} cubic yards
-
-</strong>
-
-</div>
-
-</div>
-
-`;
-
-}
-
-/* CUSTOM ITEMS */
-
-function addItem(){
-
-items.push({
-
-name:'',
-
-amount:0
+document.getElementById(x).classList.add('hidden');
 
 });
 
-renderItems();
+document.getElementById(id).classList.remove('hidden');
 
-calc();
+if(id==='preview')renderPreview();
 
-}
-
-function renderItems(){
-
-$('items').innerHTML=
-
-items.length?
-
-items.map((x,i)=>`
-
-<div class="item">
-
-<div class="fields">
-
-<input
-
-placeholder="Item"
-
-value="${x.name}"
-
-oninput="items[${i}].name=this.value"
-
->
-
-<input
-
-type="number"
-
-placeholder="Cost $"
-
-value="${x.amount}"
-
-oninput="items[${i}].amount=Number(this.value)||0;calc()"
-
->
-
-</div>
-
-</div>
-
-`).join('')
-
-:
-
-'<div class="empty">No custom items.</div>';
+if(id==='saved')renderSaved();
 
 }
 
-/* DIRECT COST */
+function setTrade(t,btn){
 
-function direct(){
+trade=t;
+
+document.querySelectorAll('.trade').forEach(x=>x.classList.remove('active'));
+
+if(btn)btn.classList.add('active');
+
+renderForm();
+
+update();
+
+}
+
+function renderForm(){
+
+document.getElementById('tradeTitle').textContent=trade+' Estimate';
+
+let html='';
+
+tradeData[trade].forEach(f=>{
+
+html+=`
+
+<div class="field">
+
+<label>${f[0]}</label>
+
+<input id="${f[1]}" type="number" step="0.01" value="${f[2]}" oninput="update()">
+
+</div>`;
+
+});
+
+if(trade==='Concrete'){
+
+html+=`
+
+<div class="card" style="background:#0c1219">
+
+<h3>Concrete Volume</h3>
+
+<div class="summary-line"><span>Exact Cubic Yards</span><strong id="exactYards">0.00 yd³</strong></div>
+
+<div class="summary-line"><span>Yards With Waste</span><strong id="wasteYards">0.00 yd³</strong></div>
+
+<div class="summary-line total"><span>Recommended Order</span><strong id="recommendedYards">0.00 yd³</strong></div>
+
+</div>`;
+
+}
+
+document.getElementById('dynamicForm').innerHTML=html;
+
+}
+
+function val(id){
+
+let e=document.getElementById(id);
+
+return e?Number(e.value||0):0;
+
+}
+
+function concreteVolume(){
+
+let length=val('length');
+
+let width=val('width');
+
+let thickness=val('thickness');
+
+let waste=val('waste');
+
+let exact=(length*width*(thickness/12))/27;
+
+let withWaste=exact*(1+waste/100);
+
+let recommended=Math.ceil(withWaste/0.25)*0.25;
+
+return {exact,withWaste,recommended};
+
+}
+
+function baseCost(){
 
 let b=0;
 
-if(trade==='roof'){
+if(trade==='Roofing'){
 
-let sq=
-
-num('area')/100*
-
-(1+num('waste')/100);
-
-b=
-
-sq*
-
-(
-
-num('mat')+
-
-num('tear')+
-
-num('install')
-
-)
-
-+
-
-num('extra')+
-
-num('disposal');
+b=val('roofArea')*(val('roofMat')+val('roofLabor'));
 
 }
 
-else if(trade==='concrete'){
+else if(trade==='Concrete'){
 
-let c=concreteCalc();
+let c=concreteVolume();
 
-b=
+b=c.recommended*val('concretePrice')+val('concreteLabor');
 
-c.order*num('yard')+
+}
 
-num('clabor')+
+else if(trade==='Remodeling'){
 
-num('reinforce')+
+b=val('mat')+val('labor');
 
-num('site');
+}
+
+else if(trade==='General Construction'){
+
+b=val('mat')+val('labor');
+
+}
+
+else if(trade==='Excavation'){
+
+b=val('qty')*val('price')+val('labor');
 
 }
 
 else{
 
-b=
+b=val('area')*(val('mat')+val('labor'))||
 
-num('materials')+
+val('lf')*(val('mat')+val('labor'))||
 
-num('labor')+
-
-num('equipment')+
-
-num('subcontract')+
-
-num('misc');
+val('qty')*val('price')+val('labor');
 
 }
 
-return b+
+customItems.forEach(x=>b+=Number(x.amount)||0);
 
-items.reduce(
-
-(a,x)=>a+(Number(x.amount)||0),
-
-0
-
-);
+return b;
 
 }
-
-/* QUOTE */
 
 function quote(){
 
-let b=direct();
+let base=baseCost();
 
-let o=
+let overhead=base*val('overhead')/100;
 
-b*num('over')/100;
+let profit=(base+overhead)*val('profit')/100;
 
-let p=
+let beforeTax=base+overhead+profit;
 
-(b+o)*
+let tax=beforeTax*val('tax')/100;
 
-num('profit')/100;
+let discount=(beforeTax+tax)*val('discount')/100;
 
-let s=
+let total=beforeTax+tax-discount;
 
-b+o+p;
+let margin=total?profit/total*100:0;
 
-let t=
-
-s*num('tax')/100;
-
-let d=
-
-num('discount');
-
-return{
-
-b,o,p,t,d,
-
-total:Math.max(0,s+t-d)
-
-};
+return {base,overhead,profit,tax,discount,total,margin};
 
 }
 
-/* CALCULATE */
-
-function calc(){
+function update(){
 
 let q=quote();
 
-let m=
+document.getElementById('base').textContent=money(q.base);
 
-q.total?
+document.getElementById('oh').textContent=money(q.overhead);
 
-(
+document.getElementById('pr').textContent=money(q.profit);
 
-(q.total-(q.b+q.o))/
+document.getElementById('tx').textContent=money(q.tax);
 
-q.total*
+document.getElementById('dc').textContent=money(q.discount);
 
-100
+document.getElementById('total').textContent=money(q.total);
 
-):0;
+document.getElementById('margin').textContent=q.margin.toFixed(1)+'%';
 
-$('base').textContent=
+if(trade==='Concrete'){
 
-money(q.b);
+let c=concreteVolume();
 
-$('oh').textContent=
+document.getElementById('exactYards').textContent=c.exact.toFixed(2)+' yd³';
 
-money(q.o);
+document.getElementById('wasteYards').textContent=c.withWaste.toFixed(2)+' yd³';
 
-$('profitOut').textContent=
-
-money(q.p);
-
-$('taxOut').textContent=
-
-money(q.t);
-
-$('discountOut').textContent=
-
-'-'+money(q.d);
-
-$('total').textContent=
-
-money(q.total);
-
-$('margin').textContent=
-
-m.toFixed(1)+'%';
-
-$('bar').style.width=
-
-Math.max(
-
-0,
-
-Math.min(100,m)
-
-)+'%';
-
-$('good').textContent=
-
-money(q.total*.9);
-
-$('better').textContent=
-
-money(q.total);
-
-$('best').textContent=
-
-money(q.total*1.15);
-
-if(trade==='concrete'){
-
-renderConcreteResult();
-
-}
-
-$('health').innerHTML=`
-
-<div class="alert">
-
-${q.b<=0||num('profit')<10
-
-?'⚠️ Review costs and margin.'
-
-:'✓ Quote looks complete.'}
-
-</div>
-
-`;
-
-preview();
-
-}
-
-/* CUSTOMER PREVIEW */
-
-function preview(){
-
-if(!$('previewBox'))return;
-
-let q=quote();
-
-let t=
-
-trades.find(
-
-x=>x[0]===trade
-
-);
-
-let concreteInfo='';
-
-if(trade==='concrete'){
-
-let c=concreteCalc();
-
-if(c.order>0){
-
-concreteInfo=`
-
-<p>
-
-<b>Concrete quantity:</b>
-
-${c.order.toFixed(2)} yd³
-
-</p>
-
-`;
+document.getElementById('recommendedYards').textContent=c.recommended.toFixed(2)+' yd³';
 
 }
 
 }
 
-$('previewBox').innerHTML=`
+function addCustom(){
 
-<h1>
+let d=document.getElementById('customDesc').value;
 
-Quote<span style="color:#e86d00">Flow</span>
+let a=Number(document.getElementById('customAmount').value||0);
 
-</h1>
+if(!d||!a)return;
 
-<p>
+customItems.push({desc:d,amount:a});
 
-${$('company').value||'Construction Company'}
+document.getElementById('customDesc').value='';
 
-</p>
+document.getElementById('customAmount').value=0;
 
-<hr>
+renderCustom();
 
-<p>
-
-<b>Prepared for:</b>
-
-${$('client').value||'Customer'}
-
-<br>
-
-<b>Address:</b>
-
-${$('address').value||'Job address'}
-
-<br>
-
-<b>Trade:</b>
-
-${t[1]}
-
-${lang==='en'?t[2]:t[3]}
-
-</p>
-
-${concreteInfo}
-
-<h1>
-
-${money(q.total)}
-
-</h1>
-
-<p>
-
-<b>Scope:</b>
-
-${lang==='en'?t[2]:t[3]} project
-
-</p>
-
-<p>
-
-Thank you for the opportunity.
-
-</p>
-
-`;
+update();
 
 }
 
-/* SAVE */
+function renderCustom(){
 
-function saveQuote(){
+document.getElementById('customList').innerHTML=customItems.map((x,i)=>`
 
-let all=
+<div class="summary-line">
 
-JSON.parse(
+<span>${x.desc}</span>
 
-localStorage.qf||'[]'
+<strong>${money(x.amount)}
 
-);
+<button class="danger" onclick="removeCustom(${i})">×</button>
 
-all.unshift({
+</strong>
 
-client:$('client').value,
+</div>`).join('');
 
-company:$('company').value,
+}
 
-address:$('address').value,
+function removeCustom(i){
 
-trade,
+customItems.splice(i,1);
 
-data:quote(),
+renderCustom();
 
-concrete:
+update();
 
-trade==='concrete'
+}
 
-?
+function goodBetterBest(){
 
-concreteCalc()
-
-:null,
-
-date:new Date().toLocaleString()
-
-});
-
-localStorage.qf=
-
-JSON.stringify(
-
-all.slice(0,50)
-
-);
-
-renderSaved();
+let t=quote().total;
 
 alert(
 
-lang==='en'
+'GOOD: '+money(t*.90)+
 
-?
+'\\nBETTER: '+money(t)+
 
-'Quote saved on this device.'
-
-:
-
-'Cotización guardada en este dispositivo.'
+'\\nBEST: '+money(t*1.15)
 
 );
+
+}
+
+function smart(){
+
+let text=document.getElementById('smartText').value.toLowerCase();
+
+let detected='General Construction';
+
+if(text.includes('roof')||text.includes('shingle'))detected='Roofing';
+
+else if(text.includes('concrete')||text.includes('slab')||text.includes('driveway'))detected='Concrete';
+
+else if(text.includes('siding'))detected='Siding';
+
+else if(text.includes('gutter'))detected='Gutters';
+
+else if(text.includes('paint'))detected='Painting';
+
+else if(text.includes('drywall'))detected='Drywall';
+
+else if(text.includes('floor'))detected='Flooring';
+
+else if(text.includes('landscape'))detected='Landscaping';
+
+else if(text.includes('excavat'))detected='Excavation';
+
+else if(text.includes('frame'))detected='Framing';
+
+else if(text.includes('remodel'))detected='Remodeling';
+
+setTrade(detected,document.querySelector('.trade.active'));
+
+document.getElementById('smartResult').textContent='Detected: '+detected;
+
+}
+
+function renderPreview(){
+
+let q=quote();
+
+document.getElementById('customerPreview').innerHTML=`
+
+<h1>${document.getElementById('company').value||'Your Construction Company'}</h1>
+
+<p><strong>Customer:</strong> ${document.getElementById('client').value||'Customer'}</p>
+
+<p><strong>Project:</strong> ${document.getElementById('address').value||'Project Address'}</p>
+
+<hr>
+
+<h2>${trade}</h2>
+
+<p>${document.getElementById('description').value||'Construction services as discussed.'}</p>
+
+<h2>Total: ${money(q.total)}</h2>
+
+<p>Thank you for choosing our company.</p>
+
+`;
+
+}
+
+function printQuote(){
+
+renderPreview();
+
+showTab('preview');
+
+setTimeout(()=>window.print(),200);
+
+}
+
+function addCO(){
+
+let d=document.getElementById('coDesc').value;
+
+let a=Number(document.getElementById('coAmount').value||0);
+
+if(!d)return;
+
+changeOrders.push({d,a});
+
+renderCO();
+
+document.getElementById('coDesc').value='';
+
+document.getElementById('coAmount').value='';
+
+}
+
+function renderCO(){
+
+document.getElementById('coList').innerHTML=changeOrders.map(x=>`
+
+<div class="summary-line">
+
+<span>${x.d}</span><strong>${money(x.a)}</strong>
+
+</div>`).join('');
+
+}
+
+function addLog(){
+
+let t=document.getElementById('logText').value;
+
+if(!t)return;
+
+logs.unshift({
+
+date:new Date().toLocaleString(),
+
+text:t
+
+});
+
+document.getElementById('logText').value='';
+
+renderLogs();
+
+}
+
+function renderLogs(){
+
+document.getElementById('logs').innerHTML=logs.map(x=>`
+
+<div class="card">
+
+<strong>${x.date}</strong>
+
+<p>${x.text}</p>
+
+</div>`).join('');
+
+}
+
+function toggleLang(){
+
+lang=lang==='en'?'es':'en';
+
+document.getElementById('langBtn').textContent=lang==='en'?'ES':'EN';
+
+if(lang==='es'){
+
+document.querySelector('.logo').innerHTML='Quote<span>Flow</span> Construcción';
+
+}else{
+
+document.querySelector('.logo').innerHTML='Quote<span>Flow</span> Construction';
+
+}
+
+}
+
+function saveQuote(){
+
+let data={
+
+client:document.getElementById('client').value,
+
+address:document.getElementById('address').value,
+
+company:document.getElementById('company').value,
+
+description:document.getElementById('description').value,
+
+trade,
+
+quote:quote(),
+
+saved:new Date().toLocaleString()
+
+};
+
+let arr=JSON.parse(localStorage.getItem('quoteflowQuotes')||'[]');
+
+arr.unshift(data);
+
+localStorage.setItem('quoteflowQuotes',JSON.stringify(arr));
+
+alert('Quote saved');
 
 }
 
 function renderSaved(){
 
-let a=
+let arr=JSON.parse(localStorage.getItem('quoteflowQuotes')||'[]');
 
-JSON.parse(
+document.getElementById('savedList').innerHTML=arr.length?
 
-localStorage.qf||'[]'
+arr.map(x=>`
 
-);
+<div class="card">
 
-$('savedList').innerHTML=
+<strong>${x.client||'Customer'}</strong>
 
-a.length?
+<p>${x.trade}</p>
 
-a.map((q,i)=>`
+<p>${money(x.quote.total)}</p>
 
-<div class="item">
+<small>${x.saved}</small>
 
-<b>
+</div>`).join(''):
 
-${q.client||'Customer'}
+'<p>No saved quotes yet.</p>';
 
-</b>
+}
 
-<div class="small">
+function openProfessionalQuote(){
 
-${q.date} · ${money(q.data.total)}
+document.getElementById('proQuote').classList.remove('hidden');
+
+document.getElementById('qCompany').value=
+
+document.getElementById('company').value||'';
+
+document.getElementById('qClient').value=
+
+document.getElementById('client').value||'';
+
+document.getElementById('qAddress').value=
+
+document.getElementById('address').value||'';
+
+document.getElementById('qDescription').value=
+
+document.getElementById('description').value||'';
+
+document.getElementById('qNumber').value=
+
+'QF-'+new Date().toISOString().slice(0,10).replaceAll('-','')+
+
+'-'+String(Math.floor(Math.random()*900)+100);
+
+document.getElementById('proQuote').scrollIntoView({behavior:'smooth'});
+
+}
+
+function generateQuote(){
+
+let q=quote();
+
+document.getElementById('professionalPreview').innerHTML=`
+
+<div class="quote-head">
+
+<div>
+
+<div class="quote-title">CONSTRUCTION QUOTE</div>
+
+<h2>${document.getElementById('qCompany').value||'Construction Company'}</h2>
 
 </div>
 
-<button
+<div>
 
-class="btn"
+<strong>Quote #:</strong> ${document.getElementById('qNumber').value}<br>
 
-onclick="loadSaved(${i})"
-
->
-
-Load
-
-</button>
+<strong>Date:</strong> ${new Date().toLocaleDateString()}
 
 </div>
 
-`).join('')
+</div>
 
-:
+<div class="quote-section">
 
-'<div class="empty">No saved quotes yet.</div>';
+<strong>Prepared For:</strong><br>
 
-}
+${document.getElementById('qClient').value||'Customer'}<br>
 
-/* LOAD */
+${document.getElementById('qAddress').value||'Project Address'}
 
-function loadSaved(i){
+</div>
 
-let a=
+<div class="quote-section">
 
-JSON.parse(
+<h3>Scope of Work</h3>
 
-localStorage.qf||'[]'
+<p>${document.getElementById('qDescription').value||'Construction services.'}</p>
 
-);
+</div>
 
-let q=a[i];
+<table class="quote-table">
 
-if(!q)return;
+<tr><th>Service</th><th>Amount</th></tr>
 
-$('client').value=
+<tr><td>${trade}</td><td>${money(q.total)}</td></tr>
 
-q.client||'';
+</table>
 
-$('company').value=
+<div class="quote-total">
 
-q.company||'';
+TOTAL: ${money(q.total)}
 
-$('address').value=
+</div>
 
-q.address||'';
+<div class="quote-section">
 
-trade=q.trade;
+<strong>Payment Terms:</strong>
 
-renderTrades();
+<p>${document.getElementById('qTerms').value}</p>
 
-renderDynamic();
+<strong>Warranty:</strong>
 
-showTab('estimate');
+<p>${document.getElementById('qWarranty').value}</p>
 
-calc();
+<strong>Notes / Exclusions:</strong>
 
-}
+<p>${document.getElementById('qNotes').value||'None specified.'}</p>
 
-/* TABS */
+</div>
 
-function showTab(x){
+<div class="signatures">
 
-['estimate','preview','tools','saved']
+<div class="signature">Contractor Signature</div>
 
-.forEach(a=>
-
-$(a).classList.toggle(
-
-'hidden',
-
-a!==x
-
-)
-
-);
-
-if(x==='preview')
-
-preview();
-
-if(x==='saved')
-
-renderSaved();
-
-}
-
-/* CLEAR */
-
-function clearAll(){
-
-if(
-
-confirm(
-
-lang==='en'
-
-?
-
-'Clear estimate?'
-
-:
-
-'¿Limpiar cotización?'
-
-)
-
-){
-
-items=[];
-
-$('client').value='';
-
-$('company').value='';
-
-$('address').value='';
-
-$('over').value=10;
-
-$('profit').value=20;
-
-$('tax').value=0;
-
-$('discount').value=0;
-
-renderDynamic();
-
-renderItems();
-
-calc();
-
-}
-
-}
-
-/* SMART SCOPE */
-
-function smart(){
-
-let s=
-
-$('description').value.toLowerCase();
-
-let found=trade;
-
-if(/roof|shingle|techo|tejas/.test(s))
-
-found='roof';
-
-else if(/concrete|slab|driveway|patio|cement|concreto/.test(s))
-
-found='concrete';
-
-else if(/siding|revestimiento/.test(s))
-
-found='siding';
-
-else if(/gutter|canaleta/.test(s))
-
-found='gutters';
-
-else if(/paint|pintura/.test(s))
-
-found='painting';
-
-else if(/drywall|sheetrock/.test(s))
-
-found='drywall';
-
-else if(/floor|tile|piso/.test(s))
-
-found='flooring';
-
-else if(/landscape|lawn|sod/.test(s))
-
-found='landscaping';
-
-else if(/excavat|grading|trench/.test(s))
-
-found='excavation';
-
-else if(/frame|stud/.test(s))
-
-found='framing';
-
-else if(/remodel|kitchen|bathroom/.test(s))
-
-found='remodel';
-
-if(s.trim()){
-
-$('smartResult').innerHTML=`
-
-<div class="alert">
-
-✓ Suggested trade:
-
-<b>
-
-${trades.find(
-
-x=>x[0]===found
-
-)[lang==='en'?2:3]}
-
-</b>
+<div class="signature">Customer Signature</div>
 
 </div>
 
 `;
 
-trade=found;
-
-renderTrades();
-
-renderDynamic();
-
 }
 
-}
+function saveProfessionalQuote(){
 
-/* CHANGE ORDERS */
+generateQuote();
 
-function addChange(){
+let data={
 
-let d=
+number:document.getElementById('qNumber').value,
 
-$('changeText').value;
+company:document.getElementById('qCompany').value,
 
-let a=
+client:document.getElementById('qClient').value,
 
-num('changeAmount');
+address:document.getElementById('qAddress').value,
 
-if(!d||!a)return;
+total:quote().total,
 
-$('changes').innerHTML+=`
+date:new Date().toLocaleString()
 
-<div class="item">
+};
 
-<b>
-
-${d}
-
-</b>
-
-<div class="small">
-
-${money(a)}
-
-</div>
-
-</div>
-
-`;
-
-$('changeText').value='';
-
-$('changeAmount').value=0;
-
-}
-
-/* DAILY LOG */
-
-function addLog(){
-
-let n=
-
-$('logText').value;
-
-if(!n)return;
-
-$('logs').innerHTML=
-
-`
-
-<div class="log">
-
-<b>
-
-${new Date().toLocaleDateString()}
-
-</b>
-
-<div class="small">
-
-${n}
-
-</div>
-
-</div>
-
-`
-
-+
-
-$('logs').innerHTML;
-
-$('logText').value='';
-
-}
-
-/* START */
-
-renderTrades();
-
-renderDynamic();
-
-renderItems();
-
-calc();
-
-renderSaved();
-
-</script>
-
-</body>
-
-</html>
+let arr=JSON.parse(localStorage.getItem('quoteflowProfessionalQuotes')||'[]
