@@ -3608,6 +3608,217 @@ window.qfUpdateDashboard
 })();
 
 </script>
+  <script>
+
+(function () {
+
+  const translations = {
+
+    "Estimate": "Estimado",
+
+    "Customer Preview": "Vista previa del cliente",
+
+    "Job Tools": "Herramientas del trabajo",
+
+    "Project & Customer": "Proyecto y cliente",
+
+    "Client": "Cliente",
+
+    "Your company": "Tu empresa",
+
+    "Job address": "Dirección del trabajo",
+
+    "CHOOSE TRADE": "ELIGE EL OFICIO",
+
+    "Customer name": "Nombre del cliente",
+
+    "Company name": "Nombre de la empresa",
+
+    "Street / city / state": "Calle / ciudad / estado",
+
+    "Roofing": "Techado",
+
+    "Concrete": "Concreto",
+
+    "Roof area": "Área del techo",
+
+    "Quote Summary": "Resumen de cotización",
+
+    "Estimated cost": "Costo estimado",
+
+    "Overhead": "Gastos generales",
+
+    "Profit": "Ganancia",
+
+    "Tax": "Impuesto",
+
+    "Discount": "Descuento",
+
+    "Recommended customer price": "Precio recomendado al cliente",
+
+    "Projected gross margin": "Margen bruto proyectado",
+
+    "GOOD": "BUENO",
+
+    "BETTER": "MEJOR",
+
+    "BEST": "ÓPTIMO",
+
+    "Good": "Bueno",
+
+    "Better": "Mejor",
+
+    "Best": "Óptimo",
+
+    "Print/PDF": "Imprimir/PDF",
+
+    "Professional Quote": "Cotización profesional",
+
+    "Clear": "Limpiar",
+
+    "COST BREAKDOWN": "DESGLOSE DE COSTOS",
+
+    "Materials": "Materiales",
+
+    "Labor": "Mano de obra",
+
+    "Other": "Otros",
+
+    "QUOTE HEALTH": "ESTADO DE LA COTIZACIÓN",
+
+    "Cost": "Costo",
+
+    "Margin": "Margen",
+
+    "Save quote": "Guardar cotización",
+
+    "Add item": "Agregar artículo",
+
+    "Siding": "Revestimiento",
+
+    "Gutters": "Canaletas",
+
+    "Painting": "Pintura",
+
+    "Drywall": "Drywall",
+
+    "Flooring": "Pisos",
+
+    "Landscaping": "Paisajismo",
+
+    "Excavation": "Excavación",
+
+    "Framing": "Estructura",
+
+    "Remodeling": "Remodelación",
+
+    "General Construction": "Construcción general",
+
+    "Change Orders": "Órdenes de cambio",
+
+    "Daily Job Log": "Registro diario del trabajo",
+
+    "Saved Quotes": "Cotizaciones guardadas",
+
+    "Smart Scope Assistant": "Asistente inteligente de alcance"
+
+  };
+
+  function translate() {
+
+    document.querySelectorAll("*").forEach(function(el) {
+
+      if (el.children.length === 0) {
+
+        const text = el.textContent.trim();
+
+        if (translations[text]) {
+
+          el.textContent = translations[text];
+
+        }
+
+      }
+
+      if (el.placeholder && translations[el.placeholder]) {
+
+        el.placeholder = translations[el.placeholder];
+
+      }
+
+    });
+
+  }
+
+  function isSpanish() {
+
+    return localStorage.getItem("quoteflow_lang_v1") === "es" ||
+
+           localStorage.getItem("quoteFlowLanguage") === "es";
+
+  }
+
+  function run() {
+
+    if (isSpanish()) translate();
+
+  }
+
+  run();
+
+  setTimeout(run, 300);
+
+  setTimeout(run, 1000);
+
+  setTimeout(run, 2000);
+
+  new MutationObserver(function() {
+
+    if (isSpanish()) translate();
+
+  }).observe(document.body, {
+
+    childList: true,
+
+    subtree: true
+
+  });
+
+  document.addEventListener("click", function(e) {
+
+    const button = e.target.closest("button");
+
+    if (!button) return;
+
+    const text = button.textContent.trim().toLowerCase();
+
+    if (text === "es" || text === "español") {
+
+      localStorage.setItem("quoteflow_lang_v1", "es");
+
+      localStorage.setItem("quoteFlowLanguage", "es");
+
+      setTimeout(translate, 100);
+
+      setTimeout(translate, 500);
+
+    }
+
+    if (text === "en" || text === "english") {
+
+      localStorage.setItem("quoteflow_lang_v1", "en");
+
+      localStorage.setItem("quoteFlowLanguage", "en");
+
+      location.reload();
+
+    }
+
+  });
+
+})();
+
+</script>
 </body>
 
 </html>
