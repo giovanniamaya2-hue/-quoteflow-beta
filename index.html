@@ -3365,6 +3365,249 @@ window.qfUpdateDashboard
 
 </script>
 <script src="./app.js?v=2"></script>
+  <script>
+
+(function () {
+
+  const ES = {
+
+    "Estimate": "Cotizar",
+
+    "Customer Preview": "Vista del cliente",
+
+    "Job Tools": "Herramientas de trabajo",
+
+    "Project & Customer": "Proyecto y cliente",
+
+    "Client": "Cliente",
+
+    "Your company": "Tu empresa",
+
+    "Job address": "Dirección del trabajo",
+
+    "Choose trade": "Elegir especialidad",
+
+    "CHOOSE TRADE": "ELEGIR ESPECIALIDAD",
+
+    "Customer name": "Nombre del cliente",
+
+    "Company name": "Nombre de la empresa",
+
+    "Street, city, state": "Calle, ciudad, estado",
+
+    "Roofing": "Techos",
+
+    "Concrete": "Concreto",
+
+    "Siding": "Revestimiento",
+
+    "Gutters": "Canaletas",
+
+    "Painting": "Pintura",
+
+    "Drywall": "Drywall",
+
+    "Flooring": "Pisos",
+
+    "Landscaping": "Paisajismo",
+
+    "Excavation": "Excavación",
+
+    "Framing": "Estructura",
+
+    "Remodeling": "Remodelación",
+
+    "General Construction": "Construcción general",
+
+    "Quantity": "Cantidad",
+
+    "Unit price": "Precio unitario",
+
+    "Materials": "Materiales",
+
+    "Labor": "Mano de obra",
+
+    "Other": "Otros",
+
+    "Overhead": "Gastos generales",
+
+    "Profit": "Ganancia",
+
+    "Markup": "Margen",
+
+    "Sales tax": "Impuesto de venta",
+
+    "Tax": "Impuesto",
+
+    "Discount": "Descuento",
+
+    "Recommended customer price": "Precio recomendado al cliente",
+
+    "Projected gross margin": "Margen bruto proyectado",
+
+    "GOOD / BETTER / BEST": "BUENO / MEJOR / ÓPTIMO",
+
+    "Good": "Bueno",
+
+    "Better": "Mejor",
+
+    "Best": "Óptimo",
+
+    "Print / PDF": "Imprimir / PDF",
+
+    "Professional Quote": "Cotización profesional",
+
+    "Clear": "Limpiar",
+
+    "COST BREAKDOWN": "DESGLOSE DE COSTOS",
+
+    "Cost Breakdown": "Desglose de costos",
+
+    "QUOTE HEALTH": "SALUD DE LA COTIZACIÓN",
+
+    "Quote Health": "Salud de la cotización",
+
+    "Cost": "Costo",
+
+    "Margin": "Margen",
+
+    "Save Quote": "Guardar cotización",
+
+    "Generate Quote": "Generar cotización",
+
+    "Print / Save PDF": "Imprimir / Guardar PDF",
+
+    "Save": "Guardar",
+
+    "Cancel": "Cancelar",
+
+    "Close": "Cerrar",
+
+    "Date": "Fecha",
+
+    "Address": "Dirección",
+
+    "Description": "Descripción",
+
+    "Subtotal": "Subtotal",
+
+    "Total": "Total",
+
+    "Payment Terms": "Condiciones de pago",
+
+    "Terms": "Términos",
+
+    "Warranty": "Garantía",
+
+    "Notes": "Notas",
+
+    "Quote Number": "Número de cotización",
+
+    "Valid Until": "Válida hasta",
+
+    "Scope": "Alcance",
+
+    "Verify quantities, supplier prices, labor, permits, taxes and site conditions before sending.":
+
+      "Verifica cantidades, precios de proveedores, mano de obra, permisos, impuestos y condiciones del lugar antes de enviar."
+
+  };
+
+  function translateNode(node) {
+
+    if (node.nodeType === Node.TEXT_NODE) {
+
+      const original = node.nodeValue.trim();
+
+      if (ES[original]) {
+
+        node.nodeValue = node.nodeValue.replace(
+
+          original,
+
+          ES[original]
+
+        );
+
+      }
+
+    }
+
+    if (node.nodeType === Node.ELEMENT_NODE) {
+
+      if (node.tagName === "SCRIPT" || node.tagName === "STYLE") return;
+
+      const placeholder = node.getAttribute("placeholder");
+
+      if (placeholder && ES[placeholder]) {
+
+        node.setAttribute("placeholder", ES[placeholder]);
+
+      }
+
+      node.childNodes.forEach(translateNode);
+
+    }
+
+  }
+
+  function translateSpanish() {
+
+    document.documentElement.lang = "es";
+
+    translateNode(document.body);
+
+  }
+
+  document.addEventListener("click", function (event) {
+
+    const button = event.target.closest("button");
+
+    if (!button) return;
+
+    const text = button.textContent.trim();
+
+    if (text === "ES") {
+
+      setTimeout(function () {
+
+        localStorage.setItem("quoteFlowLanguage", "es");
+
+        translateSpanish();
+
+      }, 150);
+
+    }
+
+  });
+
+  const observer = new MutationObserver(function () {
+
+    if (localStorage.getItem("quoteFlowLanguage") === "es") {
+
+      translateNode(document.body);
+
+    }
+
+  });
+
+  observer.observe(document.body, {
+
+    childList: true,
+
+    subtree: true
+
+  });
+
+  if (localStorage.getItem("quoteFlowLanguage") === "es") {
+
+    translateSpanish();
+
+  }
+
+})();
+
+</script>
 </body>
 
 </html>
