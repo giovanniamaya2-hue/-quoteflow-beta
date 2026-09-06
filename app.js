@@ -479,4 +479,1491 @@
   }
 
   if(document.readyState === "loading") document.addEventListener("DOMContentLoaded",init); else init();
+  /* =========================================================
+
+   QUOTEFLOW REAL DASHBOARD CHARTS
+
+   ========================================================= */
+
+(function(){
+
+  if (window.__qfRealChartsInstalled) return;
+
+  window.__qfRealChartsInstalled = true;
+
+  const style = document.createElement("style");
+
+  style.textContent = `
+
+    #qfRealCharts{
+
+      display:grid;
+
+      grid-template-columns:1fr 1fr;
+
+      gap:16px;
+
+      margin:18px 0;
+
+    }
+
+    .qf-chart-card{
+
+      background:#111827;
+
+      border:1px solid #263244;
+
+      border-radius:18px;
+
+      padding:18px;
+
+      box-sizing:border-box;
+
+    }
+
+    .qf-chart-title{
+
+      font-size:17px;
+
+      font-weight:900;
+
+      margin-bottom:16px;
+
+      color:#f3f4f6;
+
+    }
+
+    .qf-chart-grid{
+
+      display:grid;
+
+      grid-template-columns:minmax(180px,260px) 1fr;
+
+      align-items:center;
+
+      gap:18px;
+
+    }
+
+    .qf-donut-wrap{
+
+      position:relative;
+
+      width:100%;
+
+      max-width:260px;
+
+      margin:auto;
+
+    }
+
+    .qf-donut-wrap canvas{
+
+      width:100%;
+
+      height:auto;
+
+      display:block;
+
+    }
+
+    .qf-donut-center{
+
+      position:absolute;
+
+      inset:0;
+
+      display:flex;
+
+      align-items:center;
+
+      justify-content:center;
+
+      flex-direction:column;
+
+      pointer-events:none;
+
+      text-align:center;
+
+    }
+
+    .qf-donut-center b{
+
+      font-size:22px;
+
+      color:#fff;
+
+    }
+
+    .qf-donut-center span{
+
+      font-size:11px;
+
+      color:#9da4ae;
+
+      margin-top:3px;
+
+    }
+
+    .qf-legend{
+
+      display:grid;
+
+      gap:12px;
+
+    }
+
+    .qf-legend-row{
+
+      display:grid;
+
+      grid-template-columns:11px 1fr auto;
+
+      gap:9px;
+
+      align-items:center;
+
+      font-size:13px;
+
+    }
+
+    .qf-legend-row i{
+
+      width:11px;
+
+      height:11px;
+
+      border-radius:50%;
+
+      display:block;
+
+    }
+
+    .qf-legend-row span{
+
+      color:#dbe2ea;
+
+    }
+
+    .qf-legend-row b{
+
+      color:#fff;
+
+      font-size:13px;
+
+    }
+
+    #qfProfitChart{
+
+      width:100%;
+
+      height:300px;
+
+      display:block;
+
+    }
+
+    @media(max-width:700px){
+
+      #qfRealCharts{
+
+        grid-template-columns:1fr;
+
+      }
+
+      .qf-chart-grid{
+
+        grid-template-columns:1fr;
+
+      }
+
+      .qf-donut-wrap{
+
+        max-width:230px;
+
+      }
+
+    }
+
+  `;
+
+  document.head.appendChild(style);
+
+  function qfMoney(n){
+
+    try{
+
+      return money(Number(n)||0);
+
+    }catch(e){
+
+      return "$" + (Number(n)||0).toFixed(2);
+
+    }
+
+  }
+
+  function qfRead(id){
+
+    const el = document.getElementById(id);
+
+    return el ? Number(el.value || 0) : 0;
+
+  }
+
+  function qfGetCosts(){
+
+    let materials = 0;
+
+    let labor = 0;
+
+    let other = 0;
+
+    const t =
+
+      typeof trade !== "undefined"
+
+        ? trade
+
+        : "general";
+
+    /* ROOFING */
+
+    if(t === "roof"){
+
+      const area = qfRead("roofArea");
+
+      const waste = 1 + qfRead("roofWaste") / 100;
+
+      materials =
+
+        area * waste * qfRead("roofMaterial")
+
+        + qfRead("roofAccessories");
+
+      labor =
+
+        area * qfRead("roofLabor")
+
+        + area * qfRead("roofTear");
+
+      other =
+
+        qfRead("roofDisposal");
+
+    }
+
+    /* CONCRETE */
+
+    else if(t === "concrete"){
+
+      const length = qfRead("length");
+
+      const width = qfRead("width");
+
+      const thickness = qfRead("thickness");
+
+      const exact =
+
+        (length * width * (thickness / 12)) / 27;
+
+      const order =
+
+        Math.ceil(
+
+          (exact * (1 + qfRead("waste") / 100)) * 4
+
+        ) / 4;
+
+      materials =
+
+        order * qfRead("concretePrice")
+
+        + qfRead("rebar");
+
+      labor =
+
+        qfRead("concreteLabor");
+
+      other =
+
+        qfRead("baseExc")
+
+        + qfRead("delivery");
+
+    }
+
+    /* OTHER TRADES */
+
+    else{
+
+      materials = qfRead("materials");
+
+      labor = qfRead("labor");
+
+      other =
+
+        qfRead("equipment")
+
+        + qfRead("subcontractor")
+
+        + qfRead("siteMisc");
+
+    }
+
+    /* CUSTOM LINE ITEMS */
+
+    try{
+
+      if(Array.isArray(items)){
+
+        items.forEach(function(item){
+
+          other += Number(item.amount || 0);
+
+        });
+
+      }
+
+    }catch(e){}
+
+    return {
+
+      materials:Math.max(0,materials),
+
+      labor:Math.max(0,labor),
+
+      other:Math.max(0,other)
+
+    };
+
+  }
+
+  function qfLabels(){
+
+    let es = false;
+
+    try{
+
+      es =
+
+        typeof currentLang === "function"
+
+          ? currentLang() === "es"
+
+          : localStorage.getItem("quoteflow_lang_v1") === "es";
+
+    }catch(e){}
+
+    return es ? {
+
+      distribution:"Distribución de costos",
+
+      performance:"Costo vs. precio al cliente",
+
+      materials:"Materiales",
+
+      labor:"Mano de obra",
+
+      other:"Otros",
+
+      cost:"Costo",
+
+      price:"Precio al cliente",
+
+      profit:"Ganancia"
+
+    } : {
+
+      distribution:"Cost distribution",
+
+      performance:"Cost vs. customer price",
+
+      materials:"Materials",
+
+      labor:"Labor",
+
+      other:"Other",
+
+      cost:"Cost",
+
+      price:"Customer price",
+
+      profit:"Profit"
+
+    };
+
+  }
+
+  function qfCreate(){
+
+    const dashboard =
+
+      document.getElementById("qfVisualDashboard")
+
+      || document.querySelector(".qf-dashboard");
+
+    if(!dashboard) return false;
+
+    let wrap =
+
+      document.getElementById("qfRealCharts");
+
+    if(wrap) return true;
+
+    wrap = document.createElement("div");
+
+    wrap.id = "qfRealCharts";
+
+    wrap.innerHTML = `
+
+      <div class="qf-chart-card">
+
+        <div class="qf-chart-title">
+
+          📊 <span id="qfChartDistributionTitle">
+
+            Cost distribution
+
+          </span>
+
+        </div>
+
+        <div class="qf-chart-grid">
+
+          <div class="qf-donut-wrap">
+
+            <canvas
+
+              id="qfCostChart"
+
+              width="260"
+
+              height="260">
+
+            </canvas>
+
+            <div class="qf-donut-center">
+
+              <b id="qfChartTotal">$0.00</b>
+
+              <span id="qfChartCostLabel">
+
+                Total Cost
+
+              </span>
+
+            </div>
+
+          </div>
+
+          <div
+
+            class="qf-legend"
+
+            id="qfChartLegend">
+
+          </div>
+
+        </div>
+
+      </div>
+
+      <div class="qf-chart-card">
+
+        <div class="qf-chart-title">
+
+          📈 <span id="qfChartPerformanceTitle">
+
+            Cost vs. customer price
+
+          </span>
+
+        </div>
+
+        <canvas
+
+          id="qfProfitChart"
+
+          width="900"
+
+          height="300">
+
+        </canvas>
+
+      </div>
+
+    `;
+
+    dashboard.parentNode.insertBefore(
+
+      wrap,
+
+      dashboard
+
+    );
+
+    return true;
+
+  }
+
+  function qfDraw(){
+
+    if(!qfCreate()) return;
+
+    const labels = qfLabels();
+
+    const costs = qfGetCosts();
+
+    const total =
+
+      costs.materials
+
+      + costs.labor
+
+      + costs.other;
+
+    let customerPrice = total;
+
+    try{
+
+      if(typeof qTotal === "function"){
+
+        customerPrice =
+
+          Number(qTotal()) || total;
+
+      }
+
+    }catch(e){}
+
+    /*
+
+      Use the same profit percentage
+
+      already used by QuoteFlow.
+
+    */
+
+    const profitPercent =
+
+      qfRead("profit");
+
+    const projectedProfit =
+
+      total * profitPercent / 100;
+
+    /* =========================
+
+       UPDATE TEXT
+
+       ========================= */
+
+    const title1 =
+
+      document.getElementById(
+
+        "qfChartDistributionTitle"
+
+      );
+
+    const title2 =
+
+      document.getElementById(
+
+        "qfChartPerformanceTitle"
+
+      );
+
+    const center =
+
+      document.getElementById(
+
+        "qfChartCostLabel"
+
+      );
+
+    if(title1)
+
+      title1.textContent = labels.distribution;
+
+    if(title2)
+
+      title2.textContent = labels.performance;
+
+    if(center)
+
+      center.textContent = labels.cost;
+
+    /* =========================
+
+       DONUT CHART
+
+       ========================= */
+
+    const canvas =
+
+      document.getElementById(
+
+        "qfCostChart"
+
+      );
+
+    if(canvas){
+
+      const ctx =
+
+        canvas.getContext("2d");
+
+      const dpr =
+
+        window.devicePixelRatio || 1;
+
+      const rect =
+
+        canvas.getBoundingClientRect();
+
+      const size =
+
+        Math.max(
+
+          180,
+
+          Math.min(
+
+            rect.width || 260,
+
+            260
+
+          )
+
+        );
+
+      canvas.width =
+
+        size * dpr;
+
+      canvas.height =
+
+        size * dpr;
+
+      ctx.setTransform(
+
+        dpr,
+
+        0,
+
+        0,
+
+        dpr,
+
+        0,
+
+        0
+
+      );
+
+      ctx.clearRect(
+
+        0,
+
+        0,
+
+        size,
+
+        size
+
+      );
+
+      const cx = size / 2;
+
+      const cy = size / 2;
+
+      const radius = size * .36;
+
+      const values = [
+
+        costs.materials,
+
+        costs.labor,
+
+        costs.other
+
+      ];
+
+      const colors = [
+
+        "#f59e0b",
+
+        "#60a5fa",
+
+        "#39d98a"
+
+      ];
+
+      let start =
+
+        -Math.PI / 2;
+
+      if(total <= 0){
+
+        ctx.beginPath();
+
+        ctx.arc(
+
+          cx,
+
+          cy,
+
+          radius,
+
+          0,
+
+          Math.PI * 2
+
+        );
+
+        ctx.lineWidth = 28;
+
+        ctx.strokeStyle =
+
+          "#253044";
+
+        ctx.stroke();
+
+      }else{
+
+        values.forEach(
+
+          function(value,index){
+
+            if(value <= 0) return;
+
+            const angle =
+
+              (value / total)
+
+              * Math.PI
+
+              * 2;
+
+            ctx.beginPath();
+
+            ctx.arc(
+
+              cx,
+
+              cy,
+
+              radius,
+
+              start,
+
+              start + angle
+
+            );
+
+            ctx.lineWidth = 28;
+
+            ctx.strokeStyle =
+
+              colors[index];
+
+            ctx.lineCap = "butt";
+
+            ctx.stroke();
+
+            start += angle;
+
+          }
+
+        );
+
+      }
+
+    }
+
+    const totalEl =
+
+      document.getElementById(
+
+        "qfChartTotal"
+
+      );
+
+    if(totalEl)
+
+      totalEl.textContent =
+
+        qfMoney(total);
+
+    /* =========================
+
+       LEGEND
+
+       ========================= */
+
+    const legend =
+
+      document.getElementById(
+
+        "qfChartLegend"
+
+      );
+
+    if(legend){
+
+      const values = [
+
+        costs.materials,
+
+        costs.labor,
+
+        costs.other
+
+      ];
+
+      const names = [
+
+        labels.materials,
+
+        labels.labor,
+
+        labels.other
+
+      ];
+
+      const colors = [
+
+        "#f59e0b",
+
+        "#60a5fa",
+
+        "#39d98a"
+
+      ];
+
+      legend.innerHTML =
+
+        values.map(
+
+          function(value,index){
+
+            return `
+
+              <div class="qf-legend-row">
+
+                <i style="
+
+                  background:${colors[index]}
+
+                "></i>
+
+                <span>
+
+                  ${names[index]}
+
+                </span>
+
+                <b>
+
+                  ${qfMoney(value)}
+
+                </b>
+
+              </div>
+
+            `;
+
+          }
+
+        ).join("");
+
+    }
+
+    /* =========================
+
+       BAR CHART
+
+       ========================= */
+
+    const bar =
+
+      document.getElementById(
+
+        "qfProfitChart"
+
+      );
+
+    if(bar){
+
+      const ctx =
+
+        bar.getContext("2d");
+
+      const dpr =
+
+        window.devicePixelRatio || 1;
+
+      const width =
+
+        Math.max(
+
+          320,
+
+          bar.clientWidth || 900
+
+        );
+
+      const height = 300;
+
+      bar.width =
+
+        width * dpr;
+
+      bar.height =
+
+        height * dpr;
+
+      ctx.setTransform(
+
+        dpr,
+
+        0,
+
+        0,
+
+        dpr,
+
+        0,
+
+        0
+
+      );
+
+      ctx.clearRect(
+
+        0,
+
+        0,
+
+        width,
+
+        height
+
+      );
+
+      const values = [
+
+        total,
+
+        customerPrice,
+
+        projectedProfit
+
+      ];
+
+      const names = [
+
+        labels.cost,
+
+        labels.price,
+
+        labels.profit
+
+      ];
+
+      const colors = [
+
+        "#94a3b8",
+
+        "#f59e0b",
+
+        "#39d98a"
+
+      ];
+
+      const max =
+
+        Math.max(
+
+          ...values,
+
+          1
+
+        ) * 1.18;
+
+      const base =
+
+        height - 52;
+
+      const top = 25;
+
+      const barWidth =
+
+        Math.min(
+
+          105,
+
+          (width - 120) / 3
+
+        );
+
+      const gap =
+
+        (width - barWidth * 3) / 4;
+
+      values.forEach(
+
+        function(value,index){
+
+          const barHeight =
+
+            Math.max(
+
+              3,
+
+              (value / max)
+
+              * (base - top)
+
+            );
+
+          const x =
+
+            gap
+
+            + index
+
+            * (barWidth + gap);
+
+          const y =
+
+            base - barHeight;
+
+          ctx.fillStyle =
+
+            colors[index];
+
+          ctx.fillRect(
+
+            x,
+
+            y,
+
+            barWidth,
+
+            barHeight
+
+          );
+
+          ctx.textAlign =
+
+            "center";
+
+          ctx.font =
+
+            "700 14px system-ui";
+
+          ctx.fillStyle =
+
+            "#f3f4f6";
+
+          ctx.fillText(
+
+            qfMoney(value),
+
+            x + barWidth / 2,
+
+            Math.max(
+
+              18,
+
+              y - 9
+
+            )
+
+          );
+
+          ctx.font =
+
+            "12px system-ui";
+
+          ctx.fillStyle =
+
+            "#9da4ae";
+
+          ctx.fillText(
+
+            names[index],
+
+            x + barWidth / 2,
+
+            base + 25
+
+          );
+
+        }
+
+      );
+
+      ctx.beginPath();
+
+      ctx.moveTo(
+
+        20,
+
+        base + .5
+
+      );
+
+      ctx.lineTo(
+
+        width - 20,
+
+        base + .5
+
+      );
+
+      ctx.strokeStyle =
+
+        "#334155";
+
+      ctx.lineWidth = 1;
+
+      ctx.stroke();
+
+    }
+
+    /* =========================
+
+       EXISTING DASHBOARD VALUES
+
+       ========================= */
+
+    const dashboardValues = [
+
+      ["dashMat",costs.materials],
+
+      ["dashLab",costs.labor],
+
+      ["dashOther",costs.other]
+
+    ];
+
+    dashboardValues.forEach(
+
+      function(pair){
+
+        const el =
+
+          document.getElementById(
+
+            pair[0]
+
+          );
+
+        if(el)
+
+          el.textContent =
+
+            qfMoney(pair[1]);
+
+      }
+
+    );
+
+    const dashCost =
+
+      document.getElementById(
+
+        "dashCost"
+
+      );
+
+    if(dashCost)
+
+      dashCost.textContent =
+
+        qfMoney(total);
+
+    const dashProfit =
+
+      document.getElementById(
+
+        "dashProfit"
+
+      );
+
+    if(dashProfit)
+
+      dashProfit.textContent =
+
+        qfMoney(projectedProfit);
+
+    const dashMargin =
+
+      document.getElementById(
+
+        "dashMargin"
+
+      );
+
+    if(dashMargin){
+
+      const margin =
+
+        customerPrice > 0
+
+          ? (projectedProfit /
+
+             customerPrice) * 100
+
+          : 0;
+
+      dashMargin.textContent =
+
+        margin.toFixed(1) + "%";
+
+    }
+
+  }
+
+  /* =========================
+
+     CONNECT TO CALCULATIONS
+
+     ========================= */
+
+  function qfInstall(){
+
+    qfCreate();
+
+    qfDraw();
+
+    if(
+
+      typeof window.calc === "function"
+
+      && !window.calc.__qfCharts
+
+    ){
+
+      const originalCalc =
+
+        window.calc;
+
+      const wrappedCalc =
+
+        function(){
+
+          const result =
+
+            originalCalc.apply(
+
+              this,
+
+              arguments
+
+            );
+
+          try{
+
+            qfDraw();
+
+          }catch(e){}
+
+          return result;
+
+        };
+
+      wrappedCalc.__qfCharts = true;
+
+      window.calc =
+
+        wrappedCalc;
+
+    }
+
+    window.addEventListener(
+
+      "resize",
+
+      function(){
+
+        qfDraw();
+
+      }
+
+    );
+
+    /*
+
+      Refresh periodically so the charts
+
+      also react to fields changed by
+
+      existing QuoteFlow controls.
+
+    */
+
+    let lastSignature = "";
+
+    setInterval(
+
+      function(){
+
+        try{
+
+          const c =
+
+            qfGetCosts();
+
+          let price = 0;
+
+          try{
+
+            price =
+
+              typeof qTotal === "function"
+
+                ? Number(qTotal()) || 0
+
+                : 0;
+
+          }catch(e){}
+
+          const signature =
+
+            [
+
+              c.materials,
+
+              c.labor,
+
+              c.other,
+
+              price,
+
+              qfRead("profit"),
+
+              typeof trade !== "undefined"
+
+                ? trade
+
+                : ""
+
+            ].join("|");
+
+          if(signature !== lastSignature){
+
+            lastSignature =
+
+              signature;
+
+            qfDraw();
+
+          }
+
+        }catch(e){}
+
+      },
+
+      500
+
+    );
+
+    /*
+
+      Keep chart language synchronized
+
+      with EN / ES.
+
+    */
+
+    const originalSetLang =
+
+      window.setLang;
+
+    if(
+
+      typeof originalSetLang === "function"
+
+      && !originalSetLang.__qfCharts
+
+    ){
+
+      const wrappedSetLang =
+
+        function(){
+
+          const result =
+
+            originalSetLang.apply(
+
+              this,
+
+              arguments
+
+            );
+
+          setTimeout(
+
+            qfDraw,
+
+            50
+
+          );
+
+          return result;
+
+        };
+
+      wrappedSetLang.__qfCharts = true;
+
+      window.setLang =
+
+        wrappedSetLang;
+
+    }
+
+  }
+
+  if(
+
+    document.readyState === "loading"
+
+  ){
+
+    document.addEventListener(
+
+      "DOMContentLoaded",
+
+      function(){
+
+        setTimeout(
+
+          qfInstall,
+
+          100
+
+        );
+
+      }
+
+    );
+
+  }else{
+
+    setTimeout(
+
+      qfInstall,
+
+      100
+
+    );
+
+  }
+
+})();
 })();
