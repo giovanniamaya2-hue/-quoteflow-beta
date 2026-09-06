@@ -3586,25 +3586,29 @@ window.qfUpdateDashboard
 
   document.addEventListener("click", function (event) {
 
-    const button = event.target.closest("button");
+  const button = event.target.closest("button");
 
-    if (!button) return;
+  if (!button) return;
 
-    const text = button.textContent.trim();
+  const text = button.textContent.trim();
 
-    if (text === "ES") {
+  if (text === "ES" || text === "EN") {
 
-      setTimeout(function () {
+    setTimeout(function () {
 
-        localStorage.setItem("quoteFlowLanguage", "es");
+      const nextLang = text === "ES" ? "es" : "en";
 
-        translateSpanish();
+      localStorage.setItem("quoteFlowLanguage", nextLang);
 
-      }, 150);
+      localStorage.setItem("quoteflow_lang_v1", nextLang);
 
-    }
+      location.reload();
 
-  });
+    }, 150);
+
+  }
+
+});
 
   const observer = new MutationObserver(function () {
 
