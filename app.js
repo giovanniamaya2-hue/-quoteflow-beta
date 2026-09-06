@@ -1958,16 +1958,17 @@
     setTimeout(
 
       qfInstall,
-
-      /* QuoteFlow - Fix Spanish encoding + icons */
+/* QUOTEFLOW - FINAL LANGUAGE + ENCODING FIX */
 
 (function () {
 
   "use strict";
 
-  function fixEncoding(text) {
+  function repairEncoding(value) {
 
-    if (typeof text !== "string") return text;
+    if (!value || typeof value !== "string") return value;
+
+    let text = value;
 
     const replacements = {
 
@@ -1983,6 +1984,8 @@
 
       "Ã±": "ñ",
 
+      "Ã¼": "ü",
+
       "Ã": "Á",
 
       "Ã‰": "É",
@@ -1995,49 +1998,63 @@
 
       "Ã‘": "Ñ",
 
+      "Ãœ": "Ü",
+
       "Â¿": "¿",
 
       "Â¡": "¡",
 
-      "Ã³": "ó",
-
-      "Ã¼": "ü",
-
-      "Ãœ": "Ü",
-
-      "Ã§": "ç",
-
-      "â†": "←",
-
-      "â†’": "→",
-
-      "â€”": "—",
+      "Â°": "°",
 
       "â€“": "–",
 
+      "â€”": "—",
+
       "â€¢": "•",
 
-      "â": "—"
+      "â†’": "→",
+
+      "â†": "←",
+
+      "âœ“": "✓",
+
+      "âœ”": "✔",
+
+      "ðŸ’¾": "💾",
+
+      "ðŸ“¤": "📤",
+
+      "ðŸ§¾": "🧾",
+
+      "ðŸ ": "🏠",
+
+      "ðŸ§±": "🧱",
+
+      "ðŸ¡": "🏡",
+
+      "â˜ï¸": "☁️"
 
     };
 
-    let result = text;
-
     Object.keys(replacements).forEach(function (bad) {
 
-      result = result.split(bad).join(replacements[bad]);
+      text = text.split(bad).join(replacements[bad]);
 
     });
 
-    return result;
+    return text;
 
   }
 
-  function repairPageText() {
+  function repairElement(el) {
+
+    if (!el) return;
+
+    /* Text inside the element */
 
     const walker = document.createTreeWalker(
 
-      document.body,
+      el,
 
       NodeFilter.SHOW_TEXT
 
@@ -2053,7 +2070,7 @@
 
     nodes.forEach(function (node) {
 
-      const fixed = fixEncoding(node.nodeValue);
+      const fixed = repairEncoding(node.nodeValue);
 
       if (fixed !== node.nodeValue) {
 
@@ -2063,27 +2080,35 @@
 
     });
 
-  }
+    /* Inputs, buttons and labels */
 
-  function repairAttributes() {
-
-    document.querySelectorAll(
+    el.querySelectorAll(
 
       "input, textarea, button, label, option"
 
-    ).forEach(function (el) {
+    ).forEach(function (item) {
 
-      ["placeholder", "title", "aria-label", "value"].forEach(function (attr) {
+      [
 
-        if (el.hasAttribute(attr)) {
+        "placeholder",
 
-          const oldValue = el.getAttribute(attr);
+        "title",
 
-          const newValue = fixEncoding(oldValue);
+        "aria-label",
+
+        "value"
+
+      ].forEach(function (attribute) {
+
+        if (item.hasAttribute(attribute)) {
+
+          const oldValue = item.getAttribute(attribute);
+
+          const newValue = repairEncoding(oldValue);
 
           if (oldValue !== newValue) {
 
-            el.setAttribute(attr, newValue);
+            item.setAttribute(attribute, newValue);
 
           }
 
@@ -2095,45 +2120,111 @@
 
   }
 
-  function fixQuoteFlowIcons() {
+  function repairQuoteFlow() {
+
+    repairElement(document.body);
+
+  }
+
+  /*
+
+   * Correct toolbar icons without depending on
+
+   * the file's character encoding.
+
+   */
+
+  function repairToolbar() {
 
     document.querySelectorAll("button").forEach(function (button) {
 
-      const text = button.textContent.trim();
+      const text = button.textContent || "";
 
       if (
 
-        text.includes("ð¾") ||
+        text.includes("Guardar") ||
 
-        text.includes("ðŸ’¾")
+        text.includes("Save")
 
       ) {
 
-        button.textContent = "💾 Guardar cotización";
+        if (
+
+          text.includes("cotiz") ||
+
+          text.includes("quote")
+
+        ) {
+
+          const lang =
+
+            typeof currentLang === "function"
+
+              ? currentLang()
+
+              : "en";
+
+          button.textContent =
+
+            lang === "es"
+
+              ? "\u{1F4BE} Guardar cotización"
+
+              : "\u{1F4BE} Save quote";
+
+        }
 
       }
 
       if (
 
-        text.includes("ð¤") ||
+        text.includes("Compartir") ||
 
-        text.includes("ðŸ“¤")
+        text.includes("Share")
 
       ) {
 
-        button.textContent = "📤 Compartir cotización";
+        const lang =
+
+          typeof currentLang === "function"
+
+            ? currentLang()
+
+            : "en";
+
+        button.textContent =
+
+          lang === "es"
+
+            ? "\u{1F4E4} Compartir cotización"
+
+            : "\u{1F4E4} Share quote";
 
       }
 
       if (
 
-        text.includes("ð§¾") ||
+        text.includes("Imprimir") ||
 
-        text.includes("ðŸ§¾")
+        text.includes("Print")
 
       ) {
 
-        button.textContent = "🧾 Imprimir / PDF";
+        const lang =
+
+          typeof currentLang === "function"
+
+            ? currentLang()
+
+            : "en";
+
+        button.textContent =
+
+          lang === "es"
+
+            ? "\u{1F9FE} Imprimir / PDF"
+
+            : "\u{1F9FE} Print / PDF";
 
       }
 
@@ -2141,49 +2232,58 @@
 
   }
 
-  function repairQuoteFlow() {
+  function fixEverything() {
 
-    repairPageText();
+    repairQuoteFlow();
 
-    repairAttributes();
-
-    fixQuoteFlowIcons();
+    repairToolbar();
 
   }
 
-  window.addEventListener("load", function () {
+  /*
 
-    setTimeout(repairQuoteFlow, 100);
+   * Watch for buttons/items created dynamically
 
-    setTimeout(repairQuoteFlow, 500);
+   * by QuoteFlow.
 
-    setTimeout(repairQuoteFlow, 1200);
+   */
+
+  const observer = new MutationObserver(function () {
+
+    fixEverything();
 
   });
 
-  const oldSetLang = window.setLang;
+  function startFix() {
 
-  if (typeof oldSetLang === "function") {
+    fixEverything();
 
-    window.setLang = function (language) {
+    observer.observe(document.body, {
 
-      oldSetLang(language);
+      childList: true,
 
-      setTimeout(function () {
+      subtree: true,
 
-        repairQuoteFlow();
+      characterData: true
 
-      }, 50);
+    });
 
-      setTimeout(function () {
+    setTimeout(fixEverything, 300);
 
-        repairQuoteFlow();
+    setTimeout(fixEverything, 800);
 
-      }, 300);
-
-    };
+    setTimeout(fixEverything, 1500);
 
   }
 
-})();
+  if (document.readyState === "loading") {
+
+    document.addEventListener("DOMContentLoaded", startFix);
+
+  } else {
+
+    startFix();
+
+  }
+
 })();
