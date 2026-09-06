@@ -1,4 +1,4 @@
-const CACHE = "quoteflow-v1";
+const CACHE = "quoteflow-v2";
 
 const ASSETS = [
 
