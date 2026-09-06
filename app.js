@@ -1959,9 +1959,229 @@
 
       qfInstall,
 
-      100
+      /* QuoteFlow - Fix Spanish encoding + icons */
+
+(function () {
+
+  "use strict";
+
+  function fixEncoding(text) {
+
+    if (typeof text !== "string") return text;
+
+    const replacements = {
+
+      "Ã¡": "á",
+
+      "Ã©": "é",
+
+      "Ã­": "í",
+
+      "Ã³": "ó",
+
+      "Ãº": "ú",
+
+      "Ã±": "ñ",
+
+      "Ã": "Á",
+
+      "Ã‰": "É",
+
+      "Ã": "Í",
+
+      "Ã“": "Ó",
+
+      "Ãš": "Ú",
+
+      "Ã‘": "Ñ",
+
+      "Â¿": "¿",
+
+      "Â¡": "¡",
+
+      "Ã³": "ó",
+
+      "Ã¼": "ü",
+
+      "Ãœ": "Ü",
+
+      "Ã§": "ç",
+
+      "â†": "←",
+
+      "â†’": "→",
+
+      "â€”": "—",
+
+      "â€“": "–",
+
+      "â€¢": "•",
+
+      "â": "—"
+
+    };
+
+    let result = text;
+
+    Object.keys(replacements).forEach(function (bad) {
+
+      result = result.split(bad).join(replacements[bad]);
+
+    });
+
+    return result;
+
+  }
+
+  function repairPageText() {
+
+    const walker = document.createTreeWalker(
+
+      document.body,
+
+      NodeFilter.SHOW_TEXT
 
     );
+
+    const nodes = [];
+
+    while (walker.nextNode()) {
+
+      nodes.push(walker.currentNode);
+
+    }
+
+    nodes.forEach(function (node) {
+
+      const fixed = fixEncoding(node.nodeValue);
+
+      if (fixed !== node.nodeValue) {
+
+        node.nodeValue = fixed;
+
+      }
+
+    });
+
+  }
+
+  function repairAttributes() {
+
+    document.querySelectorAll(
+
+      "input, textarea, button, label, option"
+
+    ).forEach(function (el) {
+
+      ["placeholder", "title", "aria-label", "value"].forEach(function (attr) {
+
+        if (el.hasAttribute(attr)) {
+
+          const oldValue = el.getAttribute(attr);
+
+          const newValue = fixEncoding(oldValue);
+
+          if (oldValue !== newValue) {
+
+            el.setAttribute(attr, newValue);
+
+          }
+
+        }
+
+      });
+
+    });
+
+  }
+
+  function fixQuoteFlowIcons() {
+
+    document.querySelectorAll("button").forEach(function (button) {
+
+      const text = button.textContent.trim();
+
+      if (
+
+        text.includes("ð¾") ||
+
+        text.includes("ðŸ’¾")
+
+      ) {
+
+        button.textContent = "💾 Guardar cotización";
+
+      }
+
+      if (
+
+        text.includes("ð¤") ||
+
+        text.includes("ðŸ“¤")
+
+      ) {
+
+        button.textContent = "📤 Compartir cotización";
+
+      }
+
+      if (
+
+        text.includes("ð§¾") ||
+
+        text.includes("ðŸ§¾")
+
+      ) {
+
+        button.textContent = "🧾 Imprimir / PDF";
+
+      }
+
+    });
+
+  }
+
+  function repairQuoteFlow() {
+
+    repairPageText();
+
+    repairAttributes();
+
+    fixQuoteFlowIcons();
+
+  }
+
+  window.addEventListener("load", function () {
+
+    setTimeout(repairQuoteFlow, 100);
+
+    setTimeout(repairQuoteFlow, 500);
+
+    setTimeout(repairQuoteFlow, 1200);
+
+  });
+
+  const oldSetLang = window.setLang;
+
+  if (typeof oldSetLang === "function") {
+
+    window.setLang = function (language) {
+
+      oldSetLang(language);
+
+      setTimeout(function () {
+
+        repairQuoteFlow();
+
+      }, 50);
+
+      setTimeout(function () {
+
+        repairQuoteFlow();
+
+      }, 300);
+
+    };
 
   }
 
