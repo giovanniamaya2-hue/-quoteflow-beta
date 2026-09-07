@@ -59,7 +59,10 @@
   function currentLang() {
     try { return localStorage.getItem(LANG_KEY) || (typeof lang !== "undefined" ? lang : "en"); } catch { return (typeof lang !== "undefined" ? lang : "en"); }
   }
-  function tr(k) { return T.en[k] || k; }
+  function tr(k) {
+  const l = currentLang();
+ return (T[l] && T[l][k]) || T.en[k] || k;
+  }
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>\"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
   }
@@ -464,12 +467,19 @@
     hookProfessionalGenerator();
     enhanceSharing();
     addToolbar();
-    try{
-      const saved=localStorage.getItem(LANG_KEY);
-      if(saved && typeof window.setLang === "function") window.setLang(saved);
-    }catch{}
     enhanceLanguage();
-    translateStaticUI();
+    try{
+
+    const saved=localStorage.getItem(LANG_KEY);
+    if(saved && typeof window.setLang === "function"){
+
+    window.setLang(saved);
+
+  }
+
+}catch{}
+
+translateStaticUI();
     normalizeItems();
     renderEnhancedItems();
     window.qfUpdateDashboard = updateEnhancedDashboard;
