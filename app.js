@@ -59,7 +59,7 @@
   function currentLang() {
     try { return localStorage.getItem(LANG_KEY) || (typeof lang !== "undefined" ? lang : "en"); } catch { return (typeof lang !== "undefined" ? lang : "en"); }
   }
-  function tr(k) { return (T[currentLang()] || T.en)[k] || k; }
+  function tr(k) { return T.en[k] || k; }
   function esc(s) {
     return String(s == null ? "" : s).replace(/[&<>\"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[c]));
   }
