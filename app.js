@@ -468,8 +468,8 @@
       const saved=localStorage.getItem(LANG_KEY);
       if(saved && typeof window.setLang === "function") window.setLang(saved);
     }catch{}
-    setTimeout(enhanceLanguage, 100);
-    setTimeout(translateStaticUI, 150);
+    enhanceLanguage();
+    translateStaticUI();
     normalizeItems();
     renderEnhancedItems();
     window.qfUpdateDashboard = updateEnhancedDashboard;
