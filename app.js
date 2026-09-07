@@ -2502,7 +2502,7 @@
 
       originalSetLang.apply(this, arguments);
 
-      if (language === "en") {
+      if (true) {
 
         setTimeout(applyEnglish, 50);
 
